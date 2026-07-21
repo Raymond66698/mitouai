@@ -1,0 +1,39 @@
+# 觅投AI (mitouai) — LiteLLM 模型网关配置
+# 阶段 1 部署到 Railway / Docker 后使用
+
+general_settings:
+  master_key: ${LITELLM_MASTER_KEY}
+  database_url: ${DATABASE_URL}
+
+litellm_settings:
+  drop_params: true
+  set_verbose: false
+
+model_list:
+  # 默认模型 —— 便宜、快速的 DeepSeek
+  - model_name: default
+    litellm_params:
+      model: deepseek/deepseek-chat
+      api_key: ${DEEPSEEK_API_KEY}
+
+  # 高级模型 —— 需要更强推理时使用
+  - model_name: premium
+    litellm_params:
+      model: deepseek/deepseek-reasoner
+      api_key: ${DEEPSEEK_API_KEY}
+
+  # OpenAI 备用
+  - model_name: gpt4o
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: ${OPENAI_API_KEY}
+
+router_settings:
+  # 故障切换: default 失败时自动切到 premium
+  fallbacks:
+    - default: [premium]
+
+  # 速率限制
+  routing_strategy: "usage-based-routing-v2"
+  allowed_fails: 3
+  num_retries: 2
