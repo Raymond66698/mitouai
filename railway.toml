@@ -2,10 +2,12 @@
 # 参考: https://docs.railway.com/
 
 [build]
-  builder = "nixpacks"
-  buildCommand = "pip install -r backend/requirements.txt"
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-  startCommand = "cd backend && gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:${PORT:-8000}"
+startCommand = ""
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
 
 # Railway 会自动注入 PORT 环境变量
