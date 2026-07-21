@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSearchParams, useParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import API_BASE from '../api'
 import { Search, Loader2, CheckCircle2, XCircle, Download, RefreshCw } from 'lucide-react'
 
 export default function Analysis() {
@@ -26,11 +27,11 @@ export default function Analysis() {
 
   const loadExistingTask = async (tid) => {
     try {
-      const r = await fetch(`/api/analysis/status/${tid}`)
+      const r = await fetch(`${API_BASE}/analysis/status/${tid}`)
       const task = await r.json()
       if (task.status === 'completed') {
         setStatus('completed')
-        const rr = await fetch(`/api/analysis/report/${tid}`)
+        const rr = await fetch(`${API_BASE}/analysis/report/${tid}`)
         setReport((await rr.json()).report)
       } else if (task.status === 'failed') {
         setStatus('failed')
@@ -45,7 +46,7 @@ export default function Analysis() {
   const searchStocks = async () => {
     if (!query.trim()) return
     try {
-      const r = await fetch(`/api/analysis/search?q=${encodeURIComponent(query.trim())}`)
+      const r = await fetch(`${API_BASE}/analysis/search?q=${encodeURIComponent(query.trim())}`)
       const data = await r.json()
       setResults(data.results || [])
     } catch { setResults([]) }
@@ -85,7 +86,7 @@ export default function Analysis() {
 
   const streamProgress = (tid) => {
     if (eventSourceRef.current) eventSourceRef.current.close()
-    const es = new EventSource(`/api/analysis/stream/${tid}`)
+    const es = new EventSource(`${API_BASE}/analysis/stream/${tid}`)
     eventSourceRef.current = es
 
     es.onmessage = (event) => {
@@ -118,7 +119,7 @@ export default function Analysis() {
 
   const fetchReport = async (tid) => {
     try {
-      const r = await fetch(`/api/analysis/report/${tid}`)
+      const r = await fetch(`${API_BASE}/analysis/report/${tid}`)
       const data = await r.json()
       setReport(data.report)
     } catch { }

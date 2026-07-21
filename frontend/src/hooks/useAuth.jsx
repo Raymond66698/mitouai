@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import API_BASE from '../api'
 
 const AuthContext = createContext(null)
-const API = '/api'
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
   // 恢复登录状态
   useEffect(() => {
     if (token) {
-      fetch(`${API}/users/me`, {
+      fetch(`${API_BASE}/users/me`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(r => r.ok ? r.json() : null)
@@ -33,12 +33,12 @@ export function AuthProvider({ children }) {
   const authFetch = useCallback(async (url, options = {}) => {
     const headers = { ...options.headers, 'Content-Type': 'application/json' }
     if (token) headers['Authorization'] = `Bearer ${token}`
-    return fetch(`${API}${url}`, { ...options, headers })
+    return fetch(`${API_BASE}${url}`, { ...options, headers })
   }, [token])
 
   const fetchQuota = async (t) => {
     try {
-      const r = await fetch(`${API}/users/quota`, {
+      const r = await fetch(`${API_BASE}/users/quota`, {
         headers: { Authorization: `Bearer ${t || token}` }
       })
       return r.ok ? r.json() : null
@@ -46,7 +46,7 @@ export function AuthProvider({ children }) {
   }
 
   const login = async (email, password) => {
-    const r = await fetch(`${API}/auth/login`, {
+    const r = await fetch(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -60,7 +60,7 @@ export function AuthProvider({ children }) {
   }
 
   const register = async (email, password, displayName) => {
-    const r = await fetch(`${API}/auth/register`, {
+    const r = await fetch(`${API_BASE}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, display_name: displayName })
