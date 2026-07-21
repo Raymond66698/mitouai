@@ -12,5 +12,7 @@ RUN pip install --no-cache-dir -r /app/backend/requirements.txt
 # 工作目录切到 backend
 WORKDIR /app/backend
 
-# Railway 会自动注入 PORT 环境变量
-CMD gunicorn main:app -w 2 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT
+# Railway 会自动注入 PORT 环境变量，默认 8000
+ENV PORT=8000
+EXPOSE 8000
+CMD gunicorn main:app -w 2 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:${PORT:-8000}
