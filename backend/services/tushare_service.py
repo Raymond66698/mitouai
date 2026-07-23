@@ -83,7 +83,7 @@ class TushareService:
     # ═══════════════════════════════════════════════
 
     def get_stock_basic(self, exchange: str = "", list_status: str = "L",
-                        fields: str = "ts_code,symbol,name,area,industry,list_date,fullname,enname,market,exchange") -> "pd.DataFrame":
+                        fields: str = "ts_code,symbol,name,area,industry,list_date,list_status,fullname,enname,market,exchange,delist_date") -> "pd.DataFrame":
         """获取股票基本信息列表
 
         Args:

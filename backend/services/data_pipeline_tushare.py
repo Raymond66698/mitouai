@@ -208,7 +208,7 @@ class TushareDataPipeline:
         else:
             with get_db_context() as db:
                 stocks = db.query(StockBasic.ts_code).filter(
-                    StockBasic.list_status == "L"
+                    (StockBasic.list_status == "L") | (StockBasic.list_status == None)
                 ).all()
                 codes = [s.ts_code for s in stocks]
 

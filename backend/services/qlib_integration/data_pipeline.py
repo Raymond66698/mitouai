@@ -67,7 +67,156 @@ class QlibDataPipeline:
             d.mkdir(parents=True, exist_ok=True)
 
     # ═══════════════════════════════════════════════
-    #  数据拉取 (akshare)
+    #  数据拉取 (从 PostgreSQL Tushare 表)
+    # ═══════════════════════════════════════════════
+
+    def fetch_from_tushare_db(self, code: str, start_date: str = "",
+                              end_date: str = "") -> pd.DataFrame:
+        """从 PostgreSQL Tushare 表读取单只股票日线数据
+
+        替代 akshare 拉取，直接读取已同步到 DB 的数据。
+        code: 6位A股代码 (如 000001)
+
+        返回标准化 DataFrame:
+          columns: date, open, close, high, low, volume, vwap
+        """
+        from database import get_db_context
+        from models.tushare_models import DailyQuote
+
+        if not start_date:
+            start_date = (datetime.now() - timedelta(days=1095)).strftime("%Y%m%d")
+        else:
+            start_date = start_date.replace("-", "")
+
+        if not end_date:
+            end_date = datetime.now().strftime("%Y%m%d")
+        else:
+            end_date = end_date.replace("-", "")
+
+        # 6位代码转 Tushare ts_code (000001 -> 000001.SZ)
+        if code.startswith(("6", "9")):
+            ts_code = f"{code}.SH"
+        elif code.startswith(("0", "3")):
+            ts_code = f"{code}.SZ"
+        elif code.startswith(("8", "4")):
+            ts_code = f"{code}.BJ"
+        else:
+            ts_code = f"{code}.SZ"
+
+        with get_db_context() as db:
+            rows = db.query(DailyQuote).filter(
+                DailyQuote.ts_code == ts_code,
+                DailyQuote.trade_date >= start_date,
+                DailyQuote.trade_date <= end_date,
+            ).order_by(DailyQuote.trade_date).all()
+
+        if not rows:
+            logger.warning(f"DB 无数据: {ts_code}")
+            return pd.DataFrame()
+
+        df = pd.DataFrame([{
+            "date": pd.Timestamp(r.trade_date[:4] + "-" + r.trade_date[4:6] + "-" + r.trade_date[6:8]),
+            "open": float(r.open) if r.open else None,
+            "close": float(r.close) if r.close else None,
+            "high": float(r.high) if r.high else None,
+            "low": float(r.low) if r.low else None,
+            "volume": float(r.vol) if r.vol else 0,  # 手
+            "amount": float(r.amount) if r.amount else 0,  # 千元
+        } for r in rows])
+
+        # VWAP = 成交额(元) / 成交量(股) = (amount * 1000) / (vol * 100)
+        df["vwap"] = df["amount"] * 10 / (df["volume"] + 1e-12)
+
+        # 数值校验
+        for col in ["open", "close", "high", "low", "volume", "vwap"]:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+
+        df = df.dropna(subset=["open", "close", "high", "low"]).reset_index(drop=True)
+        logger.info(f"DB读取 {ts_code}: {len(df)} 条")
+        return df
+
+    def fetch_multi_from_tushare_db(self, codes: list[str],
+                                    start_date: str = "", end_date: str = "",
+                                    progress_callback=None) -> dict[str, pd.DataFrame]:
+        """批量从 PostgreSQL 读取多只股票数据（无速率限制，极快）"""
+        results = {}
+        total = len(codes)
+        for i, code in enumerate(codes):
+            success = False
+            try:
+                df = self.fetch_from_tushare_db(code, start_date, end_date)
+                if not df.empty:
+                    results[code] = df
+                    success = True
+            except Exception as e:
+                logger.error(f"[{i+1}/{total}] {code}: {e}")
+
+            if progress_callback:
+                progress_callback(i + 1, total, code, success)
+
+        return results
+
+    def refresh_from_tushare_db(self, codes: list[str], days_back: int = 30,
+                                progress_callback=None) -> dict:
+        """从 PostgreSQL Tushare 数据增量刷新 .bin 文件
+
+        用于每日盘后：从 DB 读取最新数据，覆盖 .bin 文件。
+        比 akshare 版快 100 倍（无需 API 调用）。
+        """
+        start_ts = time.time()
+        logger.info(f"=== 从 DB 刷新 Qlib .bin: {len(codes)} 只 ===")
+
+        start_date = (datetime.now() - timedelta(days=days_back)).strftime("%Y%m%d")
+
+        all_data = self.fetch_multi_from_tushare_db(
+            codes, start_date=start_date, progress_callback=progress_callback
+        )
+        if not all_data:
+            return {"success": [], "failed": codes, "error": "DB 无数据"}
+
+        # 读取已有日历并合并
+        existing_calendar = self.load_calendar()
+        new_calendar = self.build_calendar(all_data)
+        if existing_calendar:
+            all_dates = sorted(set(existing_calendar + new_calendar))
+        else:
+            all_dates = new_calendar
+        self.save_calendar(all_dates)
+
+        fields = ["open", "close", "high", "low", "volume", "vwap"]
+        success = []
+        failed = []
+
+        for code, df in all_data.items():
+            symbol = to_qlib_symbol(code)
+            try:
+                aligned = self._align_to_calendar(df, all_dates)
+                if aligned.empty:
+                    failed.append(code)
+                    continue
+                date_index = all_dates.index(aligned.index.min())
+                for field in fields:
+                    if field in aligned.columns:
+                        values = aligned[field].values
+                        self._write_bin(symbol, field, values, date_index)
+                success.append(code)
+            except Exception as e:
+                logger.error(f"  {symbol}: 刷新失败 - {e}")
+                failed.append(code)
+
+        self.save_instruments(all_data)
+
+        elapsed = time.time() - start_ts
+        logger.info(f"=== DB刷新完成: {len(success)} 成功, {len(failed)} 失败, {elapsed:.1f}s ===")
+        return {
+            "success": success,
+            "failed": failed,
+            "calendar_days": len(all_dates),
+            "elapsed_seconds": round(elapsed, 1),
+        }
+
+    # ═══════════════════════════════════════════════
+    #  数据拉取 (akshare — 保留作为备用)
     # ═══════════════════════════════════════════════
 
     def fetch_stock_data(self, code: str, start_date: str = "",
