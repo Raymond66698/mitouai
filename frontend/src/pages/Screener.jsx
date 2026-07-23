@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, Filter, X, ArrowUpDown, TrendingUp, TrendingDown, Loader2, Sparkles, SlidersHorizontal, Star, Zap, BarChart3 } from 'lucide-react'
+import { Search, Filter, ArrowUpDown, TrendingUp, TrendingDown, Loader2, Sparkles, SlidersHorizontal, Star, BarChart3, AlertCircle } from 'lucide-react'
 
 export default function Screener() {
   const navigate = useNavigate()
@@ -14,7 +14,6 @@ export default function Screener() {
   const [sortBy, setSortBy] = useState('score')
   const [sortDir, setSortDir] = useState('desc')
 
-  // 高级筛选条件
   const [filters, setFilters] = useState({
     min_pe: '', max_pe: '', min_pb: '', max_pb: '',
     min_mv: '', max_mv: '', min_turnover: '',
@@ -114,47 +113,74 @@ export default function Screener() {
   }
 
   const quickStrategies = [
-    { id: 'buffett-value', name: '巴菲特', icon: '🏛️', color: 'bg-primary-50 text-primary-700 border-primary-200' },
-    { id: 'graham-value', name: '格雷厄姆', icon: '🕯️', color: 'bg-primary-50 text-primary-700 border-primary-200' },
-    { id: 'value-factor', name: '价值因子', icon: '💎', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-    { id: 'quality-factor', name: '质量因子', icon: '⭐', color: 'bg-purple-50 text-purple-700 border-purple-200' },
-    { id: 'momentum-factor', name: '动量因子', icon: '🚀', color: 'bg-red-50 text-red-700 border-red-200' },
-    { id: 'lowvol-factor', name: '低波动', icon: '🛡️', color: 'bg-base-2 text-ink-secondary border-base-4' },
+    { id: 'buffett-value', name: '巴菲特', icon: '🏛️', color: '#C8963E' },
+    { id: 'graham-value', name: '格雷厄姆', icon: '🕯️', color: '#C8963E' },
+    { id: 'value-factor', name: '价值因子', icon: '💎', color: '#059669' },
+    { id: 'quality-factor', name: '质量因子', icon: '⭐', color: '#7C3AED' },
+    { id: 'momentum-factor', name: '动量因子', icon: '🚀', color: '#DC2626' },
+    { id: 'lowvol-factor', name: '低波动', icon: '🛡️', color: '#0891B2' },
   ]
 
+  const inputStyle = {
+    background: '#FFFFFF',
+    border: '1px solid #F0E6D3',
+    color: '#1A1A2E',
+  }
+
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="animate-in">
+      {/* ── 页头 ── */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-ink-primary">智能选股器</h1>
-        <p className="text-ink-muted mt-1">多因子筛选 + AI自然语言选股，全市场5000+标的秒级筛选</p>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg"
+            style={{ background: 'linear-gradient(135deg, #C8963E, #E8A817)', boxShadow: '0 4px 12px rgba(200,150,62,0.3)' }}>
+            <Search className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold" style={{ color: '#1A1A2E' }}>智能选股器</h1>
+            <p className="text-sm" style={{ color: '#A09080' }}>多因子筛选 + AI自然语言选股，全市场5000+标的秒级筛选</p>
+          </div>
+        </div>
+        {/* 合规声明 */}
+        <div className="flex items-start gap-2 px-4 py-2.5 rounded-lg" style={{ background: 'rgba(196,30,58,0.04)', border: '1px solid rgba(196,30,58,0.1)' }}>
+          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#C41E3A' }} />
+          <span className="text-xs" style={{ color: '#A3152E' }}>
+            本工具仅用于金融知识教育展示，筛选结果不构成投资建议。市场有风险，投资需谨慎。
+          </span>
+        </div>
       </div>
 
-      {/* 搜索栏 */}
-      <div className="bg-base-2 rounded-2xl border border-base-4 shadow-card p-4 mb-6">
+      {/* ── 搜索栏 ── */}
+      <div className="card p-4 mb-6">
         <div className="flex gap-3">
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-muted" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: '#A09080' }} />
             <input
               type="text"
               value={query}
               onChange={e => setQuery(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSearch()}
               placeholder="用自然语言描述选股条件（如：PE小于20且ROE大于15%的白酒股）"
-              className="w-full pl-12 pr-4 py-3.5 border-2 border-base-4 rounded-xl focus:border-primary-400 outline-none text-base transition-all"
+              className="w-full pl-12 pr-4 py-3.5 rounded-xl outline-none text-base transition-all"
+              style={inputStyle}
+              onFocus={e => { e.target.style.borderColor = '#C8963E'; e.target.style.boxShadow = '0 0 0 3px rgba(200,150,62,0.1)' }}
+              onBlur={e => { e.target.style.borderColor = '#F0E6D3'; e.target.style.boxShadow = 'none' }}
             />
           </div>
           <button
             onClick={handleSearch}
             disabled={loading}
-            className="px-6 py-3.5 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-all flex items-center gap-2 shrink-0 disabled:opacity-50"
+            className="btn-primary text-sm font-semibold flex items-center gap-2 shrink-0 disabled:opacity-50"
           >
             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
             AI选股
           </button>
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className={`px-4 py-3.5 rounded-xl font-medium flex items-center gap-2 transition-all shrink-0
-              ${showFilters ? 'bg-primary-50 text-primary-700 border border-primary-200' : 'bg-base-2 text-ink-secondary border border-base-4 hover:bg-base-3'}`}
+            className="px-4 py-3.5 rounded-xl font-medium flex items-center gap-2 transition-all shrink-0"
+            style={showFilters
+              ? { background: 'rgba(200,150,62,0.12)', color: '#C8963E', border: '1px solid rgba(200,150,62,0.3)' }
+              : { background: '#FFFFFF', color: '#6B5B4E', border: '1px solid #F0E6D3' }}
           >
             <SlidersHorizontal className="w-5 h-5" />
             高级筛选
@@ -167,7 +193,8 @@ export default function Screener() {
             <button
               key={s.id}
               onClick={() => handleStrategy(s.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all hover:shadow-sm ${s.color}`}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all hover:shadow-sm"
+              style={{ background: `${s.color}10`, color: s.color, borderColor: `${s.color}30` }}
             >
               <span>{s.icon}</span> {s.name}
             </button>
@@ -175,67 +202,51 @@ export default function Screener() {
         </div>
       </div>
 
-      {/* 高级筛选面板 */}
+      {/* ── 高级筛选面板 ── */}
       {showFilters && (
-        <div className="bg-base-2 rounded-2xl border border-base-4 shadow-card p-5 mb-6">
+        <div className="card p-5 mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-ink-primary flex items-center gap-2">
-              <Filter className="w-4 h-4" /> 高级筛选条件
+            <h3 className="font-semibold flex items-center gap-2" style={{ color: '#1A1A2E' }}>
+              <Filter className="w-4 h-4" style={{ color: '#C8963E' }} /> 高级筛选条件
             </h3>
             <button onClick={() => setFilters({ min_pe:'',max_pe:'',min_pb:'',max_pb:'',min_mv:'',max_mv:'',min_turnover:'',sector:'',exclude_st:true })}
-              className="text-xs text-ink-muted hover:text-ink-secondary">重置</button>
+              className="text-xs transition-colors" style={{ color: '#A09080' }}>重置</button>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-            <div>
-              <label className="block text-xs text-ink-muted mb-1">市盈率 PE (最低)</label>
-              <input type="number" value={filters.min_pe} onChange={e => setFilters({...filters, min_pe: e.target.value})}
-                placeholder="如 5" className="w-full px-3 py-2 border border-base-4 rounded-lg text-sm focus:border-primary-400 outline-none" />
-            </div>
-            <div>
-              <label className="block text-xs text-ink-muted mb-1">市盈率 PE (最高)</label>
-              <input type="number" value={filters.max_pe} onChange={e => setFilters({...filters, max_pe: e.target.value})}
-                placeholder="如 25" className="w-full px-3 py-2 border border-base-4 rounded-lg text-sm focus:border-primary-400 outline-none" />
-            </div>
-            <div>
-              <label className="block text-xs text-ink-muted mb-1">市净率 PB (最低)</label>
-              <input type="number" value={filters.min_pb} onChange={e => setFilters({...filters, min_pb: e.target.value})}
-                placeholder="如 0.5" className="w-full px-3 py-2 border border-base-4 rounded-lg text-sm focus:border-primary-400 outline-none" />
-            </div>
-            <div>
-              <label className="block text-xs text-ink-muted mb-1">市净率 PB (最高)</label>
-              <input type="number" value={filters.max_pb} onChange={e => setFilters({...filters, max_pb: e.target.value})}
-                placeholder="如 5" className="w-full px-3 py-2 border border-base-4 rounded-lg text-sm focus:border-primary-400 outline-none" />
-            </div>
-            <div>
-              <label className="block text-xs text-ink-muted mb-1">最低市值 (亿)</label>
-              <input type="number" value={filters.min_mv} onChange={e => setFilters({...filters, min_mv: e.target.value})}
-                placeholder="如 100" className="w-full px-3 py-2 border border-base-4 rounded-lg text-sm focus:border-primary-400 outline-none" />
-            </div>
-            <div>
-              <label className="block text-xs text-ink-muted mb-1">最高市值 (亿)</label>
-              <input type="number" value={filters.max_mv} onChange={e => setFilters({...filters, max_mv: e.target.value})}
-                placeholder="如 1000" className="w-full px-3 py-2 border border-base-4 rounded-lg text-sm focus:border-primary-400 outline-none" />
-            </div>
-            <div>
-              <label className="block text-xs text-ink-muted mb-1">最低换手率 (%)</label>
-              <input type="number" value={filters.min_turnover} onChange={e => setFilters({...filters, min_turnover: e.target.value})}
-                placeholder="如 1" className="w-full px-3 py-2 border border-base-4 rounded-lg text-sm focus:border-primary-400 outline-none" />
-            </div>
-            <div>
-              <label className="block text-xs text-ink-muted mb-1">行业关键词</label>
-              <input type="text" value={filters.sector} onChange={e => setFilters({...filters, sector: e.target.value})}
-                placeholder="如 医药/白酒" className="w-full px-3 py-2 border border-base-4 rounded-lg text-sm focus:border-primary-400 outline-none" />
-            </div>
+            {[
+              { key: 'min_pe', label: '市盈率 PE (最低)', placeholder: '如 5' },
+              { key: 'max_pe', label: '市盈率 PE (最高)', placeholder: '如 25' },
+              { key: 'min_pb', label: '市净率 PB (最低)', placeholder: '如 0.5' },
+              { key: 'max_pb', label: '市净率 PB (最高)', placeholder: '如 5' },
+              { key: 'min_mv', label: '最低市值 (亿)', placeholder: '如 100' },
+              { key: 'max_mv', label: '最高市值 (亿)', placeholder: '如 1000' },
+              { key: 'min_turnover', label: '最低换手率 (%)', placeholder: '如 1' },
+              { key: 'sector', label: '行业关键词', placeholder: '如 医药/白酒' },
+            ].map(f => (
+              <div key={f.key}>
+                <label className="block text-xs mb-1" style={{ color: '#A09080' }}>{f.label}</label>
+                <input
+                  type={f.key === 'sector' ? 'text' : 'number'}
+                  value={filters[f.key]}
+                  onChange={e => setFilters({...filters, [f.key]: e.target.value})}
+                  placeholder={f.placeholder}
+                  className="w-full px-3 py-2 rounded-lg text-sm outline-none transition-all"
+                  style={inputStyle}
+                  onFocus={e => e.target.style.borderColor = '#C8963E'}
+                  onBlur={e => e.target.style.borderColor = '#F0E6D3'}
+                />
+              </div>
+            ))}
           </div>
           <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 text-sm text-ink-secondary">
+            <label className="flex items-center gap-2 text-sm" style={{ color: '#6B5B4E' }}>
               <input type="checkbox" checked={filters.exclude_st}
                 onChange={e => setFilters({...filters, exclude_st: e.target.checked})}
-                className="rounded border-base-4 text-primary-600" />
+                className="rounded" style={{ accentColor: '#C8963E' }} />
               排除 ST 股票
             </label>
             <button onClick={handleFilterSearch} disabled={loading}
-              className="px-5 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-all disabled:opacity-50 flex items-center gap-2">
+              className="btn-primary text-sm font-medium flex items-center gap-2 disabled:opacity-50">
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
               开始筛选
             </button>
@@ -243,156 +254,161 @@ export default function Screener() {
         </div>
       )}
 
-      {/* 解析后的条件提示 */}
+      {/* ── 筛选条件提示 ── */}
       {parsedConditions && Object.keys(parsedConditions).length > 0 && (
         <div className="flex items-center gap-2 mb-4 flex-wrap">
-          <span className="text-xs text-ink-muted">筛选条件：</span>
-          {Object.entries(parsedConditions).filter(([k]) => k !== 'sort_by' && k !== 'exclude_st' && k !== 'nl_query').map(([k, v]) => (
-            <span key={k} className="px-2 py-0.5 bg-primary-50 text-primary-700 rounded-full text-xs">
+          <span className="text-xs" style={{ color: '#A09080' }}>筛选条件：</span>
+          {Object.entries(parsedConditions).filter(([k]) => k !== 'sort_by' && k !== 'exclude_st' && k !== 'nl_query' && k !== 'strategy_id').map(([k, v]) => (
+            <span key={k} className="px-2 py-0.5 rounded-full text-xs"
+              style={{ background: 'rgba(200,150,62,0.08)', color: '#C8963E' }}>
               {k}: {typeof v === 'number' ? v.toFixed(1) : v}
             </span>
           ))}
           {parsedConditions.exclude_st && (
-            <span className="px-2 py-0.5 bg-primary-50 text-primary-700 rounded-full text-xs">排除ST</span>
+            <span className="px-2 py-0.5 rounded-full text-xs"
+              style={{ background: 'rgba(200,150,62,0.08)', color: '#C8963E' }}>排除ST</span>
+          )}
+          {parsedConditions.strategy_id && (
+            <span className="px-2 py-0.5 rounded-full text-xs"
+              style={{ background: 'rgba(196,30,58,0.08)', color: '#C41E3A' }}>策略: {parsedConditions.strategy_id}</span>
           )}
           {totalScanned > 0 && (
-            <span className="text-xs text-ink-muted ml-2">
+            <span className="text-xs ml-2" style={{ color: '#A09080' }}>
               从 {totalScanned.toLocaleString()} 只股票中筛选出 {total} 只
             </span>
           )}
         </div>
       )}
 
-      {/* 结果表格 */}
+      {/* ── 结果表格 ── */}
       {results.length > 0 && (
-        <div className="bg-base-2 rounded-2xl border border-base-4 shadow-card overflow-hidden">
+        <div className="card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-base-4 bg-base-2">
-                  <th className="text-left px-4 py-3 text-xs font-medium text-ink-muted uppercase">#</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-ink-muted uppercase">股票</th>
-                  <th className="text-right px-4 py-3 text-xs font-medium text-ink-muted uppercase cursor-pointer hover:text-primary-600"
-                    onClick={() => toggleSort('score')}>
-                    <span className="flex items-center justify-end gap-1">
-                      评分 {sortBy === 'score' && <ArrowUpDown className="w-3 h-3" />}
-                    </span>
-                  </th>
-                  <th className="text-right px-4 py-3 text-xs font-medium text-ink-muted uppercase">最新价</th>
-                  <th className="text-right px-4 py-3 text-xs font-medium text-ink-muted uppercase cursor-pointer hover:text-primary-600"
-                    onClick={() => toggleSort('change_pct')}>
-                    <span className="flex items-center justify-end gap-1">
-                      涨跌幅 {sortBy === 'change_pct' && <ArrowUpDown className="w-3 h-3" />}
-                    </span>
-                  </th>
-                  <th className="text-right px-4 py-3 text-xs font-medium text-ink-muted uppercase cursor-pointer hover:text-primary-600"
-                    onClick={() => toggleSort('pe')}>
-                    <span className="flex items-center justify-end gap-1">
-                      PE {sortBy === 'pe' && <ArrowUpDown className="w-3 h-3" />}
-                    </span>
-                  </th>
-                  <th className="text-right px-4 py-3 text-xs font-medium text-ink-muted uppercase">PB</th>
-                  <th className="text-right px-4 py-3 text-xs font-medium text-ink-muted uppercase cursor-pointer hover:text-primary-600"
-                    onClick={() => toggleSort('mv')}>
-                    <span className="flex items-center justify-end gap-1">
-                      市值 {sortBy === 'mv' && <ArrowUpDown className="w-3 h-3" />}
-                    </span>
-                  </th>
-                  <th className="text-right px-4 py-3 text-xs font-medium text-ink-muted uppercase">换手率</th>
-                  <th className="text-center px-4 py-3 text-xs font-medium text-ink-muted uppercase">操作</th>
+                <tr style={{ borderBottom: '1px solid #F0E6D3' }}>
+                  {[
+                    { label: '#', align: 'left', sortable: false },
+                    { label: '股票', align: 'left', sortable: false },
+                    { label: '评分', align: 'right', sortable: true, field: 'score' },
+                    { label: '最新价', align: 'right', sortable: false },
+                    { label: '涨跌幅', align: 'right', sortable: true, field: 'change_pct' },
+                    { label: 'PE', align: 'right', sortable: true, field: 'pe' },
+                    { label: 'PB', align: 'right', sortable: false },
+                    { label: '市值', align: 'right', sortable: true, field: 'mv' },
+                    { label: '换手率', align: 'right', sortable: false },
+                    { label: '操作', align: 'center', sortable: false },
+                  ].map((col, i) => (
+                    <th key={i}
+                      className={`px-4 py-3 text-xs font-medium uppercase cursor-${col.sortable ? 'pointer' : 'default'}`}
+                      style={{ color: '#A09080', textAlign: col.align }}
+                      onClick={() => col.sortable && toggleSort(col.field)}>
+                      {col.sortable ? (
+                        <span className="flex items-center justify-end gap-1 transition-colors hover:text-amber-600">
+                          {col.label} {sortBy === col.field && <ArrowUpDown className="w-3 h-3" />}
+                        </span>
+                      ) : col.label}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                {sortedResults.map((stock, i) => {
-                  const code = stock.code
-                  const suffix = code && code.length >= 3 ? code.slice(-3) : ''
-                  return (
-                    <tr key={code} className="border-b border-gray-50 hover:bg-base-3 transition-colors">
-                      <td className="px-4 py-3">
-                        <span className="text-xs font-semibold text-ink-muted">{i + 1}</span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 bg-gradient-to-br from-primary-100 to-purple-100 rounded-lg flex items-center justify-center text-xs font-bold text-primary-600">
-                            {stock.name?.[0]}
-                          </div>
-                          <div>
-                            <div className="font-medium text-sm text-ink-primary">{stock.name}</div>
-                            <div className="text-xs text-ink-muted">{code}</div>
-                          </div>
+                {sortedResults.map((stock, i) => (
+                  <tr key={stock.code} className="transition-colors"
+                    style={{ borderBottom: '1px solid #FFF8EE' }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#FFF8EE'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                    <td className="px-4 py-3">
+                      <span className="text-xs font-semibold" style={{ color: '#A09080' }}>{i + 1}</span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold"
+                          style={{ background: 'rgba(200,150,62,0.1)', color: '#C8963E' }}>
+                          {stock.name?.[0]}
                         </div>
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                          <span className="font-semibold text-sm text-ink-secondary">{stock.score || '--'}</span>
+                        <div>
+                          <div className="font-medium text-sm" style={{ color: '#1A1A2E' }}>{stock.name}</div>
+                          <div className="text-xs font-mono" style={{ color: '#A09080' }}>{stock.code}</div>
                         </div>
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <span className="text-sm font-medium text-ink-primary">
-                          {stock.price ? stock.price.toFixed(2) : '--'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <span className={`inline-flex items-center gap-1 text-sm font-medium
-                          ${(stock.change_pct || 0) >= 0 ? 'text-red-500' : 'text-green-500'}`}>
-                          {(stock.change_pct || 0) >= 0 ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
-                          {stock.change_pct != null ? `${stock.change_pct > 0 ? '+' : ''}${stock.change_pct.toFixed(2)}%` : '--'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <span className="text-sm text-ink-secondary">{formatPE(stock.pe)}</span>
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <span className="text-sm text-ink-secondary">
-                          {stock.pb && stock.pb > 0 ? stock.pb.toFixed(1) : '--'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <span className="text-sm text-ink-secondary">{formatMV(stock.total_mv)}</span>
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <span className="text-sm text-ink-secondary">
-                          {stock.turnover ? `${stock.turnover.toFixed(2)}%` : '--'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <button
-                          onClick={() => navigate(`/analysis?q=${stock.name}`)}
-                          className="px-3 py-1.5 text-xs bg-primary-50 text-primary-700 rounded-lg hover:bg-primary-100 transition-colors font-medium"
-                        >
-                          分析
-                        </button>
-                      </td>
-                    </tr>
-                  )
-                })}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <Star className="w-3.5 h-3.5" style={{ color: '#E8A817', fill: '#E8A817' }} />
+                        <span className="font-semibold text-sm num" style={{ color: '#6B5B4E' }}>{stock.score || '--'}</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <span className="text-sm font-medium num" style={{ color: '#1A1A2E' }}>
+                        {stock.price ? stock.price.toFixed(2) : '--'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <span className="inline-flex items-center gap-1 text-sm font-medium num"
+                        style={{ color: (stock.change_pct || 0) >= 0 ? '#DC2626' : '#059669' }}>
+                        {(stock.change_pct || 0) >= 0 ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
+                        {stock.change_pct != null ? `${stock.change_pct > 0 ? '+' : ''}${stock.change_pct.toFixed(2)}%` : '--'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <span className="text-sm num" style={{ color: '#6B5B4E' }}>{formatPE(stock.pe)}</span>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <span className="text-sm num" style={{ color: '#6B5B4E' }}>
+                        {stock.pb && stock.pb > 0 ? stock.pb.toFixed(1) : '--'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <span className="text-sm num" style={{ color: '#6B5B4E' }}>{formatMV(stock.total_mv)}</span>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <span className="text-sm num" style={{ color: '#6B5B4E' }}>
+                        {stock.turnover ? `${stock.turnover.toFixed(2)}%` : '--'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-center">
+                      <button
+                        onClick={() => navigate(`/analysis?q=${stock.name}`)}
+                        className="px-3 py-1.5 text-xs rounded-lg transition-colors font-medium"
+                        style={{ background: 'rgba(200,150,62,0.08)', color: '#C8963E' }}
+                        onMouseEnter={e => { e.target.style.background = 'rgba(200,150,62,0.15)' }}
+                        onMouseLeave={e => { e.target.style.background = 'rgba(200,150,62,0.08)' }}>
+                        分析
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
           {total > 30 && (
-            <div className="px-4 py-3 text-center text-sm text-ink-muted bg-base-2 border-t border-base-4">
+            <div className="px-4 py-3 text-center text-sm" style={{ color: '#A09080', borderTop: '1px solid #F0E6D3' }}>
               显示前30条，共 {total} 条结果
             </div>
           )}
         </div>
       )}
 
-      {/* 空状态 */}
+      {/* ── 空状态 ── */}
       {!loading && results.length === 0 && (
         <div className="text-center py-20">
-          <div className="w-20 h-20 bg-base-3 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Search className="w-10 h-10 text-ink-muted" />
+          <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4"
+            style={{ background: '#FFF8EE' }}>
+            <Search className="w-10 h-10" style={{ color: '#A09080' }} />
           </div>
-          <h3 className="text-lg font-medium text-ink-muted mb-2">输入条件开始选股</h3>
-          <p className="text-sm text-ink-muted max-w-md mx-auto">
+          <h3 className="text-lg font-medium mb-2" style={{ color: '#A09080' }}>输入条件开始选股</h3>
+          <p className="text-sm max-w-md mx-auto" style={{ color: '#A09080' }}>
             支持自然语言描述，或使用高级筛选精确设置条件。
           </p>
           {conditionsHelp?.examples && (
             <div className="mt-4 flex flex-wrap gap-2 justify-center">
               {conditionsHelp.examples.slice(0, 4).map((ex, i) => (
                 <button key={i} onClick={() => { setQuery(ex); handleSearch() }}
-                  className="px-3 py-1.5 text-xs bg-base-2 text-ink-secondary rounded-full hover:bg-primary-50 hover:text-primary-600 transition-colors border border-base-4">
+                  className="px-3 py-1.5 text-xs rounded-full transition-colors"
+                  style={{ background: '#FFFFFF', color: '#6B5B4E', border: '1px solid #F0E6D3' }}
+                  onMouseEnter={e => { e.target.style.borderColor = '#C8963E'; e.target.style.color = '#C8963E' }}
+                  onMouseLeave={e => { e.target.style.borderColor = '#F0E6D3'; e.target.style.color = '#6B5B4E' }}>
                   {ex}
                 </button>
               ))}
@@ -401,12 +417,12 @@ export default function Screener() {
         </div>
       )}
 
-      {/* 加载 */}
+      {/* ── 加载 ── */}
       {loading && (
         <div className="text-center py-20">
-          <Loader2 className="w-10 h-10 text-primary-500 animate-spin mx-auto mb-4" />
-          <p className="text-ink-muted">正在扫描全市场股票...</p>
-          <p className="text-xs text-ink-muted mt-1">大约需要 5-10 秒</p>
+          <Loader2 className="w-10 h-10 animate-spin mx-auto mb-4" style={{ color: '#C8963E' }} />
+          <p style={{ color: '#A09080' }}>正在扫描全市场股票...</p>
+          <p className="text-xs mt-1" style={{ color: '#A09080' }}>大约需要 5-10 秒</p>
         </div>
       )}
     </div>

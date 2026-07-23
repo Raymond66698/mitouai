@@ -4,7 +4,7 @@ import {
   BookOpen, Sigma, TrendingUp, Activity, BarChart3, Layers,
   GitCompare, Search, ChevronRight, X, Loader2, Calculator,
   GraduationCap, Database, RefreshCw, AlertCircle, Lightbulb,
-  ArrowRight, Hash
+  ArrowRight, Hash, Gauge
 } from 'lucide-react'
 import { Line } from 'react-chartjs-2'
 import {
@@ -56,6 +56,7 @@ export default function QuantClassroom() {
   const [calcResult, setCalcResult] = useState(null)
   const [calcLoading, setCalcLoading] = useState(false)
   const [calcError, setCalcError] = useState('')
+  const [fundData, setFundData] = useState(null)
 
   // 多股对比
   const [compareTickers, setCompareTickers] = useState('600519.SS,000001.SZ')
@@ -154,14 +155,29 @@ export default function QuantClassroom() {
     setCalcLoading(true)
     setCalcError('')
     setCalcResult(null)
+    setFundData(null)
     try {
-      const r = await fetch(`${API_BASE}/quant/factors/${calcTicker.trim()}?last_n=1`)
-      if (!r.ok) {
-        const err = await r.json()
-        throw new Error(err.detail || `HTTP ${r.status}`)
+      const ticker = calcTicker.trim()
+      const code = ticker.split('.')[0]
+
+      // 并行获取因子数据 + 基本面数据
+      const [factorRes, fundRes] = await Promise.all([
+        fetch(`${API_BASE}/quant/factors/${ticker}?last_n=1`),
+        fetch(`${API_BASE}/quant/fundamentals/${code}`).catch(() => null),
+      ])
+
+      if (!factorRes.ok) {
+        const err = await factorRes.json()
+        throw new Error(err.detail || `HTTP ${factorRes.status}`)
       }
-      const data = await r.json()
+      const data = await factorRes.json()
       setCalcResult(data)
+
+      // 基本面数据（可选，失败不影响主流程）
+      if (fundRes && fundRes.ok) {
+        const fund = await fundRes.json()
+        if (!fund.error) setFundData(fund)
+      }
     } catch (e) {
       setCalcError(e.message)
     }
@@ -407,6 +423,76 @@ export default function QuantClassroom() {
                 </div>
                 <span className="text-xs" style={{ color: '#A09080' }}>{calcResult.date} · {calcResult.total_factors} 因子</span>
               </div>
+
+              {/* 基本面数据卡片 */}
+              {fundData && (
+                <div className="grid grid-cols-3 gap-2 mb-3 p-3 rounded-xl"
+                  style={{ background: 'rgba(200,150,62,0.04)', border: '1px solid rgba(200,150,62,0.12)' }}>
+                  <div className="flex items-center gap-1.5">
+                    <Gauge className="w-3.5 h-3.5 shrink-0" style={{ color: '#C8963E' }} />
+                    <div>
+                      <div className="text-2xs" style={{ color: '#A09080' }}>PE(TTM)</div>
+                      <div className="text-sm font-bold num" style={{ color: '#1A1A2E' }}>
+                        {fundData.pe_ttm ? fundData.pe_ttm.toFixed(1) : '--'}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 shrink-0" style={{ color: '#7C3AED' }} />
+                    <div>
+                      <div className="text-2xs" style={{ color: '#A09080' }}>PB</div>
+                      <div className="text-sm font-bold num" style={{ color: '#1A1A2E' }}>
+                        {fundData.pb ? fundData.pb.toFixed(2) : '--'}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Database className="w-3.5 h-3.5 shrink-0" style={{ color: '#2563EB' }} />
+                    <div>
+                      <div className="text-2xs" style={{ color: '#A09080' }}>市值</div>
+                      <div className="text-sm font-bold num" style={{ color: '#1A1A2E' }}>
+                        {fundData.total_mv_yi != null
+                          ? (fundData.total_mv_yi >= 10000
+                            ? `${(fundData.total_mv_yi / 10000).toFixed(1)}万亿`
+                            : `${fundData.total_mv_yi.toFixed(0)}亿`)
+                          : '--'}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Activity className="w-3.5 h-3.5 shrink-0" style={{ color: '#059669' }} />
+                    <div>
+                      <div className="text-2xs" style={{ color: '#A09080' }}>现价</div>
+                      <div className="text-sm font-bold num" style={{ color: '#1A1A2E' }}>
+                        {fundData.price ? fundData.price.toFixed(2) : '--'}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <TrendingUp className="w-3.5 h-3.5 shrink-0"
+                      style={{ color: (fundData.change_pct || 0) >= 0 ? '#DC2626' : '#059669' }} />
+                    <div>
+                      <div className="text-2xs" style={{ color: '#A09080' }}>涨跌幅</div>
+                      <div className="text-sm font-bold num"
+                        style={{ color: (fundData.change_pct || 0) >= 0 ? '#DC2626' : '#059669' }}>
+                        {fundData.change_pct != null
+                          ? `${fundData.change_pct >= 0 ? '+' : ''}${fundData.change_pct.toFixed(2)}%`
+                          : '--'}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <RefreshCw className="w-3.5 h-3.5 shrink-0" style={{ color: '#D97706' }} />
+                    <div>
+                      <div className="text-2xs" style={{ color: '#A09080' }}>换手率</div>
+                      <div className="text-sm font-bold num" style={{ color: '#1A1A2E' }}>
+                        {fundData.turnover_rate != null ? `${fundData.turnover_rate.toFixed(2)}%` : '--'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="space-y-1 max-h-[360px] overflow-y-auto pr-1">
                 {calcResult.factors?.map(f => {
                   const color = CATEGORY_COLORS[f.category] || '#C8963E'

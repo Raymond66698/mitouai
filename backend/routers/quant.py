@@ -205,6 +205,38 @@ async def market_overview():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/market/top-stocks")
+async def market_top_stocks(
+    metric: str = Query("pe_ttm", description="排名指标: pe_ttm/pb/total_mv/turnover_rate/change_pct"),
+    n: int = Query(10, description="返回数量"),
+    direction: str = Query("cheapest", description="cheapest=最低, most_expensive=最高"),
+):
+    """获取市场估值 Top N 股票
+
+    示例:
+    - GET /api/quant/market/top-stocks?metric=pe_ttm&n=10&direction=cheapest
+    - GET /api/quant/market/top-stocks?metric=change_pct&n=10&direction=most_expensive
+    """
+    try:
+        from services.qlib_integration.fundamental_service import fundamental_service
+        ascending = direction == "cheapest"
+        return fundamental_service.get_top_stocks(metric=metric, n=n, ascending=ascending)
+    except Exception as e:
+        logger.error(f"Top股票获取失败: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/market/breadth")
+async def market_breadth():
+    """获取市场涨跌分布详情（按涨幅区间统计）"""
+    try:
+        from services.qlib_integration.fundamental_service import fundamental_service
+        return fundamental_service.get_market_breadth()
+    except Exception as e:
+        logger.error(f"市场涨跌分布获取失败: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ═══════════════════════════════════════════════
 #  数据管道管理
 # ═══════════════════════════════════════════════

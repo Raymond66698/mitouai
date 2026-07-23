@@ -4,7 +4,8 @@ import { useAuth } from '../hooks/useAuth'
 import api from '../api'
 import {
   Search, TrendingUp, Zap, FileText, Star, BarChart3, ArrowRight,
-  Newspaper, Sparkles, Filter, Crown, Coins, Radio, Activity
+  Newspaper, Sparkles, Filter, Crown, Coins, Radio, Activity,
+  Gauge, Layers, PieChart
 } from 'lucide-react'
 
 const QUICK_TOOLS = [
@@ -120,6 +121,7 @@ export default function Dashboard() {
   const [indices, setIndices] = useState([])
   const [news, setNews] = useState([])
   const [recentAnalysis, setRecentAnalysis] = useState([])
+  const [marketOverview, setMarketOverview] = useState(null)
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
 
@@ -136,12 +138,14 @@ export default function Dashboard() {
 
   const loadDashboardData = async () => {
     try {
-      const [idxRes, newsRes] = await Promise.all([
+      const [idxRes, newsRes, mktRes] = await Promise.all([
         api.get('/market/indices').catch(() => ({ data: { indices: [] } })),
         api.get('/market/news?limit=6').catch(() => ({ data: { news: [] } })),
+        api.get('/quant/market-overview').catch(() => ({ data: null })),
       ])
       setIndices(idxRes.data?.indices || [])
       setNews(newsRes.data?.news || [])
+      if (mktRes.data && !mktRes.data.error) setMarketOverview(mktRes.data)
     } catch {
       // 静默失败
     }
@@ -302,6 +306,76 @@ export default function Dashboard() {
           </>
         )}
       </div>
+
+      {/* ── 市场概览条 ── */}
+      {marketOverview && (
+        <Link to="/market" className="block mb-8 group">
+          <div className="card p-4 transition-all group-hover:shadow-lg"
+            style={{ background: 'linear-gradient(135deg, rgba(200,150,62,0.04), rgba(255,255,255,0.6))' }}>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <BarChart3 className="w-4 h-4" style={{ color: '#C8963E' }} />
+                <span className="text-sm font-bold" style={{ color: '#1A1A2E' }}>市场概览</span>
+                <span className="text-2xs" style={{ color: '#A09080' }}>
+                  {marketOverview.total_stocks?.toLocaleString() || 0} 只A股 · 更新于 {marketOverview.cache_time || '--'}
+                </span>
+              </div>
+              <span className="text-xs flex items-center gap-1 transition-all group-hover:gap-2" style={{ color: '#C8963E' }}>
+                查看详情 <ArrowRight className="w-3 h-3" />
+              </span>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+              <div className="flex items-center gap-2">
+                <Gauge className="w-4 h-4 shrink-0" style={{ color: '#C8963E' }} />
+                <div>
+                  <div className="text-2xs" style={{ color: '#A09080' }}>中位PE</div>
+                  <div className="text-base font-bold num" style={{ color: '#1A1A2E' }}>
+                    {marketOverview.median_pe?.toFixed(1) || '--'}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Layers className="w-4 h-4 shrink-0" style={{ color: '#7C3AED' }} />
+                <div>
+                  <div className="text-2xs" style={{ color: '#A09080' }}>中位PB</div>
+                  <div className="text-base font-bold num" style={{ color: '#1A1A2E' }}>
+                    {marketOverview.median_pb?.toFixed(1) || '--'}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <PieChart className="w-4 h-4 shrink-0" style={{ color: '#2563EB' }} />
+                <div>
+                  <div className="text-2xs" style={{ color: '#A09080' }}>总市值</div>
+                  <div className="text-base font-bold num" style={{ color: '#1A1A2E' }}>
+                    {marketOverview.total_market_cap_yi >= 10000
+                      ? `${(marketOverview.total_market_cap_yi / 10000).toFixed(1)}万亿`
+                      : `${marketOverview.total_market_cap_yi?.toFixed(0) || 0}亿`}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 shrink-0" style={{ color: '#DC2626' }} />
+                <div>
+                  <div className="text-2xs" style={{ color: '#A09080' }}>上涨</div>
+                  <div className="text-base font-bold num" style={{ color: '#DC2626' }}>
+                    {marketOverview.up_count || 0}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Activity className="w-4 h-4 shrink-0" style={{ color: '#059669' }} />
+                <div>
+                  <div className="text-2xs" style={{ color: '#A09080' }}>下跌</div>
+                  <div className="text-base font-bold num" style={{ color: '#059669' }}>
+                    {marketOverview.down_count || 0}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Link>
+      )}
 
       {/* ── 功能快捷入口 ── */}
       <div ref={toolsRef} className={`mb-8 transition-all duration-700 ${toolsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>

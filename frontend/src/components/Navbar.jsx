@@ -20,6 +20,7 @@ const navGroups = [
   {
     label: '数据中心', icon: BarChart3,
     children: [
+      { to: '/market', label: '市场概览', desc: '全A股估值与涨跌', icon: BarChart3 },
       { to: '/brief', label: '每日播报', desc: 'AI市场综述', icon: Radio },
       { to: '/research', label: '研报聚合', desc: 'AI摘要研报', icon: FileText },
       { to: '/capital', label: '资金流向', desc: '北向/龙虎榜', icon: DollarSign },

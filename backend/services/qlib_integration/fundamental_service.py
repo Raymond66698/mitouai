@@ -189,6 +189,91 @@ class FundamentalService:
         except Exception as e:
             return {"error": str(e)}
 
+    def get_top_stocks(self, metric: str = "pe_ttm", n: int = 10,
+                       ascending: bool = True) -> dict:
+        """获取市场估值 Top N 股票
+
+        Args:
+            metric: 排名指标 (pe_ttm / pb / total_mv / turnover_rate / change_pct)
+            n: 返回数量
+            ascending: True=从低到高(最便宜), False=从高到低(最贵)
+
+        Returns:
+            {"metric": ..., "direction": "cheapest"/"most_expensive", "stocks": [...]}
+        """
+        if not self._ensure_cache():
+            return {"error": "数据源不可用"}
+
+        col_map = {
+            "pe_ttm": "市盈率-动态",
+            "pb": "市净率",
+            "total_mv": "总市值",
+            "turnover_rate": "换手率",
+            "change_pct": "涨跌幅",
+        }
+        col = col_map.get(metric, "市盈率-动态")
+
+        df = self._cache
+        try:
+            # 过滤掉 NaN 和 <= 0 的值（亏损股PE为负或0）
+            valid = df[df[col].notna() & (df[col] > 0)].copy()
+            valid = valid.sort_values(col, ascending=ascending).head(n)
+
+            stocks = []
+            for _, r in valid.iterrows():
+                total_mv = float(r.get("总市值", 0)) if pd.notna(r.get("总市值")) else 0
+                stocks.append({
+                    "code": str(r.get("代码", "")),
+                    "name": str(r.get("名称", "")),
+                    "price": round(float(r.get("最新价", 0)), 2) if pd.notna(r.get("最新价")) else None,
+                    "change_pct": round(float(r.get("涨跌幅", 0)), 2) if pd.notna(r.get("涨跌幅")) else None,
+                    "pe_ttm": round(float(r.get("市盈率-动态", 0)), 2) if pd.notna(r.get("市盈率-动态")) else None,
+                    "pb": round(float(r.get("市净率", 0)), 2) if pd.notna(r.get("市净率")) else None,
+                    "total_mv_yi": round(total_mv / 1e8, 2) if total_mv else None,
+                    "turnover_rate": round(float(r.get("换手率", 0)), 2) if pd.notna(r.get("换手率")) else None,
+                })
+
+            return {
+                "metric": metric,
+                "metric_name": {"pe_ttm": "市盈率(TTM)", "pb": "市净率",
+                                "total_mv": "总市值", "turnover_rate": "换手率",
+                                "change_pct": "涨跌幅"}.get(metric, metric),
+                "direction": "cheapest" if ascending else "most_expensive",
+                "count": len(stocks),
+                "stocks": stocks,
+                "cache_time": self._cache_time.strftime("%Y-%m-%d %H:%M") if self._cache_time else None,
+                "disclaimer": "本数据仅用于金融知识教育展示，不构成投资建议",
+            }
+        except Exception as e:
+            logger.error(f"获取Top股票失败: {e}")
+            return {"error": str(e)}
+
+    def get_market_breadth(self) -> dict:
+        """获取市场涨跌分布详情（按涨幅区间统计）"""
+        if not self._ensure_cache():
+            return {"error": "数据源不可用"}
+
+        df = self._cache
+        try:
+            change = df["涨跌幅"].dropna()
+            return {
+                "total": len(change),
+                "up_count": int((change > 0).sum()),
+                "down_count": int((change < 0).sum()),
+                "flat_count": int((change == 0).sum()),
+                "limit_up": int((change >= 9.8).sum()),
+                "limit_down": int((change <= -9.8).sum()),
+                "big_up": int(((change >= 5) & (change < 9.8)).sum()),
+                "big_down": int(((change <= -5) & (change > -9.8)).sum()),
+                "mid_up": int(((change >= 2) & (change < 5)).sum()),
+                "mid_down": int(((change <= -2) & (change > -5)).sum()),
+                "small_up": int(((change > 0) & (change < 2)).sum()),
+                "small_down": int(((change < 0) & (change > -2)).sum()),
+                "cache_time": self._cache_time.strftime("%Y-%m-%d %H:%M") if self._cache_time else None,
+            }
+        except Exception as e:
+            return {"error": str(e)}
+
 
 # 全局单例
 fundamental_service = FundamentalService()
