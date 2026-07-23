@@ -389,21 +389,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Footer ── */}
-      <footer className="py-10 border-t" style={{ borderColor: '#F0E6D3', background: '#FFFBF5' }}>
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white font-bold text-xs"
-              style={{ background: 'linear-gradient(135deg, #C8963E, #E8A817)' }}>
-              觅
-            </div>
-            <span className="font-bold" style={{ color: '#3D2A0C' }}>觅投AI</span>
-          </div>
-          <p className="text-xs" style={{ color: '#A09080' }}>
-            &copy; 2026 觅投AI — AI 驱动的智能投研平台
-          </p>
-        </div>
-      </footer>
+      {/* ── Footer 由全局 SiteFooter 组件统一渲染 ── */}
     </div>
   )
 }

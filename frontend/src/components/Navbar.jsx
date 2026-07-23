@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import {
-  BarChart3, Search, Zap, Bell, Settings, LogOut, Menu, X,
-  TrendingUp, Radio, Star, FileText, DollarSign, GitBranch,
+import   {
+    BarChart3, Search, Zap, Bell, Settings, LogOut, Menu, X,
+    TrendingUp, Radio, Star, FileText, DollarSign, GitBranch,
   Share2, Filter, Sparkles, ChevronDown, User, Crown, Coins,
-  GraduationCap
+  GraduationCap, BookMarked
 } from 'lucide-react'
 
 const navGroups = [
@@ -28,6 +28,7 @@ const navGroups = [
   },
   { to: '/strategies', label: '策略超市', icon: Zap },
   { to: '/classroom', label: '策略小课堂', icon: GraduationCap },
+  { to: '/notes', label: '知识笔记', icon: BookMarked },
   { to: '/community', label: '策略广场', icon: Share2 },
   {
     label: '我的', icon: User,
