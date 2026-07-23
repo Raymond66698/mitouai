@@ -169,7 +169,7 @@ async def get_fundamentals(code: str):
 @router.get("/fundamentals")
 async def fundamentals_ranking(
     codes: str = Query(..., description="逗号分隔的股票代码，如 600519,000001"),
-    metric: str = Query("pe_ttm", description="排名指标: pe_ttm/pb/ps_ttm/dv_ratio"),
+    metric: str = Query("pe_ttm", description="排名指标: pe_ttm/pb"),
 ):
     """多股票估值排名
 
@@ -183,12 +183,25 @@ async def fundamentals_ranking(
             raise HTTPException(status_code=400, detail="至少需要2只股票")
 
         result = fundamental_service.get_valuation_ranking(code_list, metric)
-        result["disclaimer"] = "本数据仅用于金融知识教育展示，不构成投资建议"
         return result
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"估值排名失败: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/market-overview")
+async def market_overview():
+    """获取市场整体概况（全A股统计）
+
+    返回平均PE/PB、总市值、涨跌家数等。
+    """
+    try:
+        from services.qlib_integration.fundamental_service import fundamental_service
+        return fundamental_service.get_market_overview()
+    except Exception as e:
+        logger.error(f"市场概况获取失败: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
