@@ -1,53 +1,16 @@
 """
 知识笔记服务 — 觅投AI 金融知识教育平台
-
-提供用户个人知识笔记的 CRUD 功能，
-支持分类标签、全文搜索、收藏标记。
-
-存储：SQLite (data/notes.db)
+使用 SQLAlchemy ORM (SQLite/PostgreSQL 双后端)
 """
 import json
 import logging
-import sqlite3
-import time
 from datetime import datetime
-from pathlib import Path
 from typing import Optional
 
+from database import get_db_context
+from models.note import Note
+
 logger = logging.getLogger("mitouai.notes")
-
-DB_PATH = Path("data/notes.db")
-
-
-def _get_db() -> sqlite3.Connection:
-    """获取 SQLite 连接（自动建表）"""
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(str(DB_PATH))
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA journal_mode=WAL")
-
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS notes (
-            id          INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id     TEXT NOT NULL DEFAULT 'default',
-            title       TEXT NOT NULL,
-            content     TEXT NOT NULL DEFAULT '',
-            category    TEXT NOT NULL DEFAULT 'general',
-            tags        TEXT NOT NULL DEFAULT '[]',
-            is_pinned   INTEGER NOT NULL DEFAULT 0,
-            is_public   INTEGER NOT NULL DEFAULT 0,
-            created_at  TEXT NOT NULL,
-            updated_at  TEXT NOT NULL
-        )
-    """)
-    conn.execute("""
-        CREATE INDEX IF NOT EXISTS idx_notes_user ON notes(user_id)
-    """)
-    conn.execute("""
-        CREATE INDEX IF NOT EXISTS idx_notes_category ON notes(category)
-    """)
-    conn.commit()
-    return conn
 
 
 # ── 预置分类 ──
@@ -64,12 +27,20 @@ CATEGORIES = {
 CATEGORY_LIST = [{"key": k, "label": v} for k, v in CATEGORIES.items()]
 
 
-def _row_to_dict(row: sqlite3.Row) -> dict:
-    """行转字典"""
-    d = dict(row)
-    d["tags"] = json.loads(d.get("tags", "[]"))
-    d["is_pinned"] = bool(d["is_pinned"])
-    d["is_public"] = bool(d["is_public"])
+def _note_to_dict(note: Note) -> dict:
+    """Note ORM 对象转为字典"""
+    d = {
+        "id": note.id,
+        "user_id": note.user_id,
+        "title": note.title,
+        "content": note.content,
+        "category": note.category,
+        "tags": note.tags if isinstance(note.tags, list) else [],
+        "is_pinned": bool(note.is_pinned),
+        "is_public": bool(note.is_public),
+        "created_at": note.created_at,
+        "updated_at": note.updated_at,
+    }
     return d
 
 
@@ -87,65 +58,48 @@ class NotesService:
         offset: int = 0,
     ) -> dict:
         """查询笔记列表（支持筛选+搜索）"""
-        conn = _get_db()
-        try:
-            sql = "SELECT * FROM notes WHERE user_id = ?"
-            params: list = [user_id]
+        with get_db_context() as db:
+            query = db.query(Note).filter(Note.user_id == user_id)
 
             if category and category != "all":
-                sql += " AND category = ?"
-                params.append(category)
+                query = query.filter(Note.category == category)
 
             if pinned_only:
-                sql += " AND is_pinned = 1"
+                query = query.filter(Note.is_pinned == True)
 
             if keyword:
-                sql += " AND (title LIKE ? OR content LIKE ?)"
-                kw = f"%{keyword}%"
-                params.extend([kw, kw])
-
-            sql += " ORDER BY is_pinned DESC, updated_at DESC LIMIT ? OFFSET ?"
-            params.extend([limit, offset])
-
-            rows = conn.execute(sql, params).fetchall()
-            notes = [_row_to_dict(r) for r in rows]
-
-            # tag 过滤（在 Python 层做，因为 tags 是 JSON）
-            if tag:
-                notes = [n for n in notes if tag in n["tags"]]
+                query = query.filter(
+                    (Note.title.ilike(f"%{keyword}%")) |
+                    (Note.content.ilike(f"%{keyword}%"))
+                )
 
             # 总数
-            count_sql = "SELECT COUNT(*) as cnt FROM notes WHERE user_id = ?"
-            count_params: list = [user_id]
-            if category and category != "all":
-                count_sql += " AND category = ?"
-                count_params.append(category)
-            if pinned_only:
-                count_sql += " AND is_pinned = 1"
-            if keyword:
-                count_sql += " AND (title LIKE ? OR content LIKE ?)"
-                count_params.extend([f"%{keyword}%", f"%{keyword}%"])
-            total = conn.execute(count_sql, count_params).fetchone()["cnt"]
+            total = query.count()
+
+            # 排序 + 分页
+            query = query.order_by(Note.is_pinned.desc(), Note.updated_at.desc())
+            notes = query.offset(offset).limit(limit).all()
+
+            result = [_note_to_dict(n) for n in notes]
+
+            # tag 过滤（Python 层，兼容 SQLite 和 PostgreSQL）
+            if tag:
+                result = [n for n in result if tag in n.get("tags", [])]
 
             return {
                 "total": total,
-                "notes": notes,
+                "notes": result,
                 "categories": CATEGORY_LIST,
             }
-        finally:
-            conn.close()
 
     def get_note(self, note_id: int, user_id: str = "default") -> Optional[dict]:
         """获取单条笔记"""
-        conn = _get_db()
-        try:
-            row = conn.execute(
-                "SELECT * FROM notes WHERE id = ? AND user_id = ?",
-                (note_id, user_id),
-            ).fetchone()
-            return _row_to_dict(row) if row else None
-        finally:
-            conn.close()
+        with get_db_context() as db:
+            note = db.query(Note).filter(
+                Note.id == note_id,
+                Note.user_id == user_id,
+            ).first()
+            return _note_to_dict(note) if note else None
 
     def create_note(
         self,
@@ -159,23 +113,25 @@ class NotesService:
     ) -> dict:
         """创建笔记"""
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        tags_json = json.dumps(tags or [], ensure_ascii=False)
 
-        conn = _get_db()
-        try:
-            cur = conn.execute(
-                """INSERT INTO notes
-                   (user_id, title, content, category, tags, is_pinned, is_public, created_at, updated_at)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                (user_id, title, content, category, tags_json,
-                 1 if is_pinned else 0, 1 if is_public else 0, now, now),
+        with get_db_context() as db:
+            note = Note(
+                user_id=user_id,
+                title=title,
+                content=content,
+                category=category,
+                tags=tags or [],
+                is_pinned=is_pinned,
+                is_public=is_public,
+                created_at=now,
+                updated_at=now,
             )
-            conn.commit()
-            note_id = cur.lastrowid
-            logger.info(f"笔记创建: id={note_id}, title={title}")
-            return self.get_note(note_id, user_id)
-        finally:
-            conn.close()
+            db.add(note)
+            db.commit()
+            db.refresh(note)
+
+            logger.info(f"笔记创建: id={note.id}, title={title}")
+            return _note_to_dict(note)
 
     def update_note(
         self,
@@ -189,103 +145,89 @@ class NotesService:
         user_id: str = "default",
     ) -> Optional[dict]:
         """更新笔记（只更新传入的字段）"""
-        existing = self.get_note(note_id, user_id)
-        if not existing:
-            return None
+        with get_db_context() as db:
+            note = db.query(Note).filter(
+                Note.id == note_id,
+                Note.user_id == user_id,
+            ).first()
 
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        updates = []
-        params = []
+            if not note:
+                return None
 
-        if title is not None:
-            updates.append("title = ?")
-            params.append(title)
-        if content is not None:
-            updates.append("content = ?")
-            params.append(content)
-        if category is not None:
-            updates.append("category = ?")
-            params.append(category)
-        if tags is not None:
-            updates.append("tags = ?")
-            params.append(json.dumps(tags, ensure_ascii=False))
-        if is_pinned is not None:
-            updates.append("is_pinned = ?")
-            params.append(1 if is_pinned else 0)
-        if is_public is not None:
-            updates.append("is_public = ?")
-            params.append(1 if is_public else 0)
+            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            changed = False
 
-        if not updates:
-            return existing
+            if title is not None:
+                note.title = title
+                changed = True
+            if content is not None:
+                note.content = content
+                changed = True
+            if category is not None:
+                note.category = category
+                changed = True
+            if tags is not None:
+                note.tags = tags
+                changed = True
+            if is_pinned is not None:
+                note.is_pinned = is_pinned
+                changed = True
+            if is_public is not None:
+                note.is_public = is_public
+                changed = True
 
-        updates.append("updated_at = ?")
-        params.append(now)
-        params.extend([note_id, user_id])
+            if not changed:
+                return _note_to_dict(note)
 
-        conn = _get_db()
-        try:
-            conn.execute(
-                f"UPDATE notes SET {', '.join(updates)} WHERE id = ? AND user_id = ?",
-                params,
-            )
-            conn.commit()
-            return self.get_note(note_id, user_id)
-        finally:
-            conn.close()
+            note.updated_at = now
+            db.commit()
+            db.refresh(note)
+            return _note_to_dict(note)
 
     def delete_note(self, note_id: int, user_id: str = "default") -> bool:
         """删除笔记"""
-        conn = _get_db()
-        try:
-            cur = conn.execute(
-                "DELETE FROM notes WHERE id = ? AND user_id = ?",
-                (note_id, user_id),
-            )
-            conn.commit()
-            return cur.rowcount > 0
-        finally:
-            conn.close()
+        with get_db_context() as db:
+            result = db.query(Note).filter(
+                Note.id == note_id,
+                Note.user_id == user_id,
+            ).delete()
+            db.commit()
+            return result > 0
 
     def get_stats(self, user_id: str = "default") -> dict:
         """获取笔记统计"""
-        conn = _get_db()
-        try:
-            total = conn.execute(
-                "SELECT COUNT(*) as cnt FROM notes WHERE user_id = ?", (user_id,)
-            ).fetchone()["cnt"]
-
-            pinned = conn.execute(
-                "SELECT COUNT(*) as cnt FROM notes WHERE user_id = ? AND is_pinned = 1",
-                (user_id,),
-            ).fetchone()["cnt"]
+        with get_db_context() as db:
+            total = db.query(Note).filter(Note.user_id == user_id).count()
+            pinned = db.query(Note).filter(
+                Note.user_id == user_id,
+                Note.is_pinned == True,
+            ).count()
 
             # 按分类统计
-            cat_rows = conn.execute(
-                "SELECT category, COUNT(*) as cnt FROM notes WHERE user_id = ? GROUP BY category",
-                (user_id,),
-            ).fetchall()
-            by_category = {r["category"]: r["cnt"] for r in cat_rows}
+            from sqlalchemy import func
+            cat_rows = db.query(
+                Note.category, func.count(Note.id)
+            ).filter(
+                Note.user_id == user_id
+            ).group_by(Note.category).all()
+            by_category = {r[0]: r[1] for r in cat_rows}
 
-            # 所有标签
-            all_rows = conn.execute(
-                "SELECT tags FROM notes WHERE user_id = ?", (user_id,)
-            ).fetchall()
+            # 所有标签统计
+            all_notes = db.query(Note.tags).filter(Note.user_id == user_id).all()
             tag_count: dict = {}
-            for r in all_rows:
-                for t in json.loads(r["tags"] or "[]"):
+            for (tags_val,) in all_notes:
+                tag_list = tags_val if isinstance(tags_val, list) else (json.loads(tags_val) if isinstance(tags_val, str) else [])
+                for t in tag_list:
                     tag_count[t] = tag_count.get(t, 0) + 1
             top_tags = sorted(tag_count.items(), key=lambda x: -x[1])[:10]
 
             return {
                 "total": total,
                 "pinned": pinned,
-                "by_category": {k: v for k, v in by_category.items()},
+                "by_category": by_category,
                 "top_tags": [{"name": t, "count": c} for t, c in top_tags],
                 "categories": CATEGORY_LIST,
             }
-        finally:
-            conn.close()
 
 
 # 单例

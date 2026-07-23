@@ -1,53 +1,21 @@
-"""Token 消费管理服务 — token 余额、消耗记录、套餐购买"""
-import json
+"""Token 消费管理服务 — 使用 SQLAlchemy ORM"""
 import uuid
-from datetime import datetime, date
-from pathlib import Path
+from datetime import datetime
 from typing import Optional
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-LEDGER_FILE = DATA_DIR / "token_ledger.json"
-TOKEN_BALANCE_FILE = DATA_DIR / "token_balances.json"
+from database import get_db_context
+from models.token import TokenBalance, TokenTransaction
+from models.user import User
 
 
 class TokenService:
     """Token 消费管理（单例模式）"""
     _instance = None
-    _ledger: dict = {}       # user_id -> [transactions]
-    _balances: dict = {}     # user_id -> {"balance": int, "total_purchased": int, "total_consumed": int}
 
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            cls._instance._init()
         return cls._instance
-
-    def _init(self):
-        DATA_DIR.mkdir(parents=True, exist_ok=True)
-        self._load()
-
-    def _load(self):
-        if LEDGER_FILE.exists():
-            self._ledger = json.loads(LEDGER_FILE.read_text(encoding="utf-8"))
-        else:
-            self._ledger = {}
-
-        if TOKEN_BALANCE_FILE.exists():
-            self._balances = json.loads(TOKEN_BALANCE_FILE.read_text(encoding="utf-8"))
-        else:
-            self._balances = {}
-
-    def _save(self):
-        LEDGER_FILE.write_text(json.dumps(self._ledger, ensure_ascii=False, indent=2), encoding="utf-8")
-        TOKEN_BALANCE_FILE.write_text(json.dumps(self._balances, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    def _ensure_user_balance(self, user_id: str):
-        if user_id not in self._balances:
-            self._balances[user_id] = {
-                "balance": 0,
-                "total_purchased": 0,
-                "total_consumed": 0,
-            }
 
     # ── 套餐定义 ──
     TOKEN_PACKAGES = [
@@ -102,16 +70,25 @@ class TokenService:
         },
     ]
 
-    # ── Token 消耗单价（每次分析） ──
+    # ── Token 消耗单价 ──
     TOKEN_COSTS = {
-        "analysis_basic": 300,       # 基础分析
-        "analysis_deep": 800,        # 深度分析（GPT-4o）
-        "analysis_report": 2000,     # 深度研报
-        "screener_scan": 500,        # 选股扫描
-        "backtest": 300,             # 策略回测
-        "daily_brief": 100,          # 每日播报
-        "research_summary": 600,     # 研报聚合
+        "analysis_basic": 300,
+        "analysis_deep": 800,
+        "analysis_report": 2000,
+        "screener_scan": 500,
+        "backtest": 300,
+        "daily_brief": 100,
+        "research_summary": 600,
     }
+
+    def _ensure_user_balance(self, db, user_id: str) -> TokenBalance:
+        """确保用户有余额记录，没有则创建"""
+        b = db.query(TokenBalance).filter(TokenBalance.user_id == user_id).first()
+        if not b:
+            b = TokenBalance(user_id=user_id, balance=0)
+            db.add(b)
+            db.flush()
+        return b
 
     def get_packages(self) -> list:
         """获取所有 token 套餐"""
@@ -119,14 +96,14 @@ class TokenService:
 
     def get_balance(self, user_id: str) -> dict:
         """获取用户 token 余额"""
-        self._ensure_user_balance(user_id)
-        b = self._balances[user_id]
-        return {
-            "user_id": user_id,
-            "balance": b["balance"],
-            "total_purchased": b["total_purchased"],
-            "total_consumed": b["total_consumed"],
-        }
+        with get_db_context() as db:
+            b = self._ensure_user_balance(db, user_id)
+            return {
+                "user_id": user_id,
+                "balance": b.balance,
+                "total_purchased": b.total_purchased,
+                "total_consumed": b.total_consumed,
+            }
 
     def purchase(self, user_id: str, package_id: str) -> dict:
         """购买 token 套餐"""
@@ -134,105 +111,109 @@ class TokenService:
         if not pkg:
             raise ValueError(f"套餐不存在: {package_id}")
 
-        # 检查新手包是否已领取过
-        if package_id == "starter":
-            if user_id in self._ledger:
-                for tx in self._ledger.get(user_id, []):
-                    if tx.get("package_id") == "starter":
-                        raise ValueError("新手体验包已领取过，每人限领一次")
+        with get_db_context() as db:
+            b = self._ensure_user_balance(db, user_id)
 
-        self._ensure_user_balance(user_id)
-        self._balances[user_id]["balance"] += pkg["tokens"]
-        self._balances[user_id]["total_purchased"] += pkg["tokens"]
+            # 检查新手包是否已领取过
+            if package_id == "starter":
+                existing = db.query(TokenTransaction).filter(
+                    TokenTransaction.user_id == user_id,
+                    TokenTransaction.package_id == "starter",
+                ).first()
+                if existing:
+                    raise ValueError("新手体验包已领取过，每人限领一次")
 
-        # 记录交易
-        tx = {
-            "id": uuid.uuid4().hex[:12],
-            "user_id": user_id,
-            "type": "purchase",
-            "package_id": package_id,
-            "package_name": pkg["name"],
-            "tokens": pkg["tokens"],
-            "amount": pkg["price"],
-            "balance_after": self._balances[user_id]["balance"],
-            "created_at": datetime.now().isoformat(),
-        }
+            # 更新余额
+            b.balance += pkg["tokens"]
+            b.total_purchased += pkg["tokens"]
 
-        if user_id not in self._ledger:
-            self._ledger[user_id] = []
-        self._ledger[user_id].append(tx)
-        self._save()
+            # 记录交易
+            tx = TokenTransaction(
+                id=uuid.uuid4().hex[:12],
+                user_id=user_id,
+                type="purchase",
+                package_id=package_id,
+                package_name=pkg["name"],
+                tokens=pkg["tokens"],
+                amount=pkg["price"],
+                balance_after=b.balance,
+                created_at=datetime.now().isoformat(),
+            )
+            db.add(tx)
+            db.commit()
 
-        return self.get_balance(user_id)
+            return self.get_balance(user_id)
 
     def consume_tokens(self, user_id: str, action: str, tokens_override: int = 0) -> dict:
-        """消耗 tokens（内部调用）"""
+        """消耗 tokens"""
         cost = tokens_override if tokens_override > 0 else self.TOKEN_COSTS.get(action, 300)
-        self._ensure_user_balance(user_id)
 
-        if self._balances[user_id]["balance"] < cost:
-            raise ValueError(f"Token 余额不足，需要 {cost} tokens，当前余额 {self._balances[user_id]['balance']}")
+        with get_db_context() as db:
+            b = self._ensure_user_balance(db, user_id)
 
-        self._balances[user_id]["balance"] -= cost
-        self._balances[user_id]["total_consumed"] += cost
+            if b.balance < cost:
+                raise ValueError(
+                    f"Token 余额不足，需要 {cost} tokens，当前余额 {b.balance}"
+                )
 
-        tx = {
-            "id": uuid.uuid4().hex[:12],
-            "user_id": user_id,
-            "type": "consume",
-            "action": action,
-            "tokens": -cost,
-            "amount": 0,
-            "balance_after": self._balances[user_id]["balance"],
-            "created_at": datetime.now().isoformat(),
-        }
+            b.balance -= cost
+            b.total_consumed += cost
 
-        if user_id not in self._ledger:
-            self._ledger[user_id] = []
-        self._ledger[user_id].append(tx)
-        self._save()
+            tx = TokenTransaction(
+                id=uuid.uuid4().hex[:12],
+                user_id=user_id,
+                type="consume",
+                action=action,
+                tokens=-cost,
+                amount=0,
+                balance_after=b.balance,
+                created_at=datetime.now().isoformat(),
+            )
+            db.add(tx)
+            db.commit()
 
-        return {"consumed": cost, "balance": self._balances[user_id]["balance"]}
+            return {"consumed": cost, "balance": b.balance}
 
     def get_usage_history(self, user_id: str, limit: int = 50) -> list:
         """获取 token 使用记录"""
-        if user_id not in self._ledger:
-            return []
-        history = self._ledger[user_id]
-        # 按时间倒序
-        sorted_history = sorted(history, key=lambda x: x["created_at"], reverse=True)
-        return sorted_history[:limit]
+        with get_db_context() as db:
+            txs = db.query(TokenTransaction).filter(
+                TokenTransaction.user_id == user_id
+            ).order_by(TokenTransaction.created_at.desc()).limit(limit).all()
+
+            return [tx.to_dict() for tx in txs]
 
     def get_usage_stats(self, user_id: str) -> dict:
         """获取使用统计（按操作类型分组）"""
-        if user_id not in self._ledger:
-            return {"by_action": {}, "daily": [], "total_consumed": 0}
+        with get_db_context() as db:
+            consumed = db.query(TokenTransaction).filter(
+                TokenTransaction.user_id == user_id,
+                TokenTransaction.type == "consume",
+            ).all()
 
-        by_action = {}
-        daily = {}
-        consumed_history = [tx for tx in self._ledger[user_id] if tx["type"] == "consume"]
+            by_action: dict = {}
+            daily: dict = {}
 
-        for tx in consumed_history:
-            action = tx.get("action", "other")
-            tokens = abs(tx["tokens"])
-            by_action[action] = by_action.get(action, 0) + tokens
+            for tx in consumed:
+                action = tx.action or "other"
+                tokens = abs(tx.tokens)
+                by_action[action] = by_action.get(action, 0) + tokens
 
-            day = tx["created_at"][:10]
-            daily[day] = daily.get(day, 0) + tokens
+                day = tx.created_at[:10] if tx.created_at else ""
+                daily[day] = daily.get(day, 0) + tokens
 
-        # 最近 30 天
-        daily_list = sorted(
-            [{"date": d, "tokens": t} for d, t in daily.items()],
-            key=lambda x: x["date"]
-        )[-30:]
+            daily_list = sorted(
+                [{"date": d, "tokens": t} for d, t in daily.items()],
+                key=lambda x: x["date"],
+            )[-30:]
 
-        total = sum(abs(tx["tokens"]) for tx in consumed_history)
+            total = sum(abs(tx.tokens) for tx in consumed)
 
-        return {
-            "by_action": by_action,
-            "daily": daily_list,
-            "total_consumed": total,
-        }
+            return {
+                "by_action": by_action,
+                "daily": daily_list,
+                "total_consumed": total,
+            }
 
 
 # ── 全局单例 ──

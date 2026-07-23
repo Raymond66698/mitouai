@@ -20,6 +20,9 @@ async def lifespan(app: FastAPI):
     # 确保 data 目录存在
     from pathlib import Path
     Path("data").mkdir(parents=True, exist_ok=True)
+    # 初始化数据库
+    from database import init_db
+    init_db()
     yield
     logger.info("  觅投AI 关闭")
 
