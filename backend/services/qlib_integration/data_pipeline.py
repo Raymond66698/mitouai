@@ -71,8 +71,8 @@ class QlibDataPipeline:
     # ═══════════════════════════════════════════════
 
     def fetch_stock_data(self, code: str, start_date: str = "",
-                         end_date: str = "") -> pd.DataFrame:
-        """从 akshare 拉取单只股票的日线数据
+                         end_date: str = "", max_retries: int = 3) -> pd.DataFrame:
+        """从 akshare 拉取单只股票的日线数据（含重试机制）
 
         返回标准化的 DataFrame:
           columns: date, open, close, high, low, volume, vwap
@@ -81,7 +81,8 @@ class QlibDataPipeline:
         import akshare as ak
 
         if not start_date:
-            start_date = (datetime.now() - timedelta(days=400)).strftime("%Y%m%d")
+            # 默认拉取3年数据（因子计算需要更长周期）
+            start_date = (datetime.now() - timedelta(days=1095)).strftime("%Y%m%d")
         else:
             start_date = start_date.replace("-", "")
 
@@ -90,13 +91,27 @@ class QlibDataPipeline:
         else:
             end_date = end_date.replace("-", "")
 
-        df = ak.stock_zh_a_hist(
-            symbol=code,
-            period="daily",
-            start_date=start_date,
-            end_date=end_date,
-            adjust="qfq",
-        )
+        df = None
+        last_err = None
+        for attempt in range(max_retries):
+            try:
+                df = ak.stock_zh_a_hist(
+                    symbol=code,
+                    period="daily",
+                    start_date=start_date,
+                    end_date=end_date,
+                    adjust="qfq",
+                )
+                break  # 成功则跳出重试循环
+            except Exception as e:
+                last_err = e
+                if attempt < max_retries - 1:
+                    wait = (attempt + 1) * 2  # 2s, 4s, 6s 指数退避
+                    logger.warning(f"  {code} 第{attempt+1}次拉取失败, {wait}s后重试: {e}")
+                    time.sleep(wait)
+                else:
+                    logger.error(f"  {code} {max_retries}次重试均失败: {e}")
+                    raise last_err
 
         if df is None or df.empty:
             logger.warning(f"akshare 返回空数据: {code}")
@@ -133,22 +148,39 @@ class QlibDataPipeline:
         return df
 
     def fetch_multi_stocks(self, codes: list[str],
-                           start_date: str = "", end_date: str = "") -> dict[str, pd.DataFrame]:
-        """批量拉取多只股票数据"""
+                           start_date: str = "", end_date: str = "",
+                           rate_limit: float = 0.35,
+                           progress_callback=None) -> dict[str, pd.DataFrame]:
+        """批量拉取多只股票数据（含速率限制和进度回调）
+
+        Args:
+            codes: 股票代码列表
+            start_date: 起始日期
+            end_date: 结束日期
+            rate_limit: 每次请求间隔秒数（避免被封）
+            progress_callback: 回调函数 (current, total, code, success)
+        """
         results = {}
+        total = len(codes)
         for i, code in enumerate(codes):
+            success = False
             try:
                 df = self.fetch_stock_data(code, start_date, end_date)
                 if not df.empty:
                     results[code] = df
-                    logger.info(f"[{i+1}/{len(codes)}] {code}: {len(df)} 条数据")
+                    success = True
+                    logger.info(f"[{i+1}/{total}] {code}: {len(df)} 条数据")
                 else:
-                    logger.warning(f"[{i+1}/{len(codes)}] {code}: 无数据")
+                    logger.warning(f"[{i+1}/{total}] {code}: 无数据")
             except Exception as e:
-                logger.error(f"[{i+1}/{len(codes)}] {code}: {e}")
-            # 避免请求过快
-            if i < len(codes) - 1:
-                time.sleep(0.3)
+                logger.error(f"[{i+1}/{total}] {code}: {e}")
+
+            if progress_callback:
+                progress_callback(i + 1, total, code, success)
+
+            # 速率限制
+            if i < total - 1:
+                time.sleep(rate_limit)
         return results
 
     # ═══════════════════════════════════════════════
@@ -235,7 +267,8 @@ class QlibDataPipeline:
     # ═══════════════════════════════════════════════
 
     def dump_all(self, codes: list[str], start_date: str = "",
-                 end_date: str = "") -> dict:
+                 end_date: str = "", rate_limit: float = 0.35,
+                 progress_callback=None) -> dict:
         """完整数据转储流程
 
         1. 拉取所有股票数据
@@ -249,7 +282,9 @@ class QlibDataPipeline:
         logger.info(f"=== 开始数据转储: {len(codes)} 只股票 ===")
 
         # 1. 拉取数据
-        all_data = self.fetch_multi_stocks(codes, start_date, end_date)
+        all_data = self.fetch_multi_stocks(codes, start_date, end_date,
+                                           rate_limit=rate_limit,
+                                           progress_callback=progress_callback)
         if not all_data:
             return {"success": [], "failed": codes, "calendar_days": 0,
                     "error": "所有股票数据拉取失败"}
@@ -406,4 +441,60 @@ class QlibDataPipeline:
             "instruments": instruments,
             "bin_files": bin_count,
             "total_size_mb": round(total_size / 1024 / 1024, 2),
+        }
+
+    def refresh_all(self, codes: list[str], rate_limit: float = 0.35,
+                    progress_callback=None) -> dict:
+        """增量刷新所有股票数据（重新拉取并覆盖 .bin 文件）
+
+        用于每日盘后定时任务：重新拉取3年数据覆盖旧 .bin。
+        比 dump_all 轻量：不重建日历文件结构，仅覆盖数据。
+
+        返回: {"success": [...], "failed": [...], "calendar_days": N}
+        """
+        start_ts = time.time()
+        logger.info(f"=== 开始增量刷新: {len(codes)} 只股票 ===")
+
+        all_data = self.fetch_multi_stocks(codes, rate_limit=rate_limit,
+                                           progress_callback=progress_callback)
+        if not all_data:
+            return {"success": [], "failed": codes, "calendar_days": 0,
+                    "error": "所有股票数据拉取失败"}
+
+        # 重建日历（合并新旧日期）
+        calendar = self.build_calendar(all_data)
+        self.save_calendar(calendar)
+
+        fields = ["open", "close", "high", "low", "volume", "vwap"]
+        success = []
+        failed = []
+
+        for code, df in all_data.items():
+            symbol = to_qlib_symbol(code)
+            try:
+                aligned = self._align_to_calendar(df, calendar)
+                if aligned.empty:
+                    failed.append(code)
+                    continue
+                date_index = calendar.index(aligned.index.min())
+                for field in fields:
+                    if field in aligned.columns:
+                        values = aligned[field].values
+                        self._write_bin(symbol, field, values, date_index)
+                success.append(code)
+            except Exception as e:
+                logger.error(f"  {symbol}: 刷新失败 - {e}")
+                failed.append(code)
+
+        self.save_instruments(all_data)
+
+        elapsed = time.time() - start_ts
+        logger.info(f"=== 刷新完成: {len(success)} 成功, {len(failed)} 失败, "
+                     f"耗时 {elapsed:.1f}s ===")
+
+        return {
+            "success": success,
+            "failed": failed,
+            "calendar_days": len(calendar),
+            "elapsed_seconds": round(elapsed, 1),
         }

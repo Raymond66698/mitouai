@@ -1,19 +1,26 @@
 """
-沪深300核心成分股批量数据导入脚本
+沪深300完整成分股批量数据导入脚本
 
 用法:
-  python scripts/batch_csi300.py              # 全部
-  python scripts/batch_csi300.py --limit 20   # 先导入20只测试
+  python scripts/batch_csi300.py                    # 全量导入300只×3年
+  python scripts/batch_csi300.py --limit 20         # 先导入20只测试
+  python scripts/batch_csi300.py --years 1          # 只拉1年数据
+  python scripts/batch_csi300.py --refresh           # 增量刷新（每日盘后用）
+  python scripts/batch_csi300.py --start-date 2024-01-01  # 自定义起始日期
 
 在 ECS 上运行:
   cd /opt/mitouai/backend
   source /opt/mitouai/venv/bin/activate
-  python scripts/batch_csi300.py
+  python scripts/batch_csi300.py              # 首次全量导入
+  python scripts/batch_csi300.py --refresh    # 每日增量刷新
 """
 import argparse
-import sys
+import json
 import os
+import sys
 import time
+from datetime import datetime, timedelta
+from pathlib import Path
 
 # 确保能导入 backend 模块
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -21,105 +28,105 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from services.qlib_integration.data_pipeline import QlibDataPipeline
 
 
-# ── 沪深300核心成分股（硬编码，避免 akshare 指数接口慢/不稳定） ──
-# 按行业分类，覆盖金融/消费/科技/能源/医药/材料等主要板块
-CORE_STOCKS = [
-    # ── 银行/金融 ──
-    "600036",  # 招商银行
-    "601398",  # 工商银行
-    "601288",  # 农业银行
-    "601939",  # 建设银行
-    "600000",  # 浦发银行
-    "601166",  # 兴业银行
-    "600016",  # 民生银行
-    "000001",  # 平安银行
-    "601318",  # 中国平安
-    "601628",  # 中国人寿
-    "600030",  # 中信证券
-    "601688",  # 华泰证券
-    # ── 食品饮料 ──
-    "600519",  # 贵州茅台
-    "000858",  # 五粮液
-    "000568",  # 泸州老窖
-    "600887",  # 伊利股份
-    "600436",  # 片仔癀
-    "000538",  # 云南白药
-    "603288",  # 海天味业
-    # ── 科技/电子 ──
-    "300750",  # 宁德时代
-    "002415",  # 海康威视
-    "000063",  # 中兴通讯
-    "002230",  # 科大讯飞
-    "300059",  # 东方财富
-    "603501",  # 韦尔股份
-    "603986",  # 兆易创新
-    "002241",  # 歌尔股份
-    # ── 新能源/汽车 ──
-    "002594",  # 比亚迪
-    "600104",  # 上汽集团
-    "601633",  # 长城汽车
-    "601012",  # 隆基绿能
-    "600438",  # 通威股份
-    # ── 能源/化工 ──
-    "601857",  # 中国石油
-    "600028",  # 中国石化
-    "601088",  # 中国神华
-    "600019",  # 宝钢股份
-    "601899",  # 紫金矿业
-    "600346",  # 恒力石化
-    # ── 医药健康 ──
-    "600276",  # 恒瑞医药
-    "300015",  # 爱尔眼科
-    "300760",  # 迈瑞医疗
-    "000963",  # 华东医药
-    # ── 消费/家电 ──
-    "000651",  # 格力电器
-    "000333",  # 美的集团
-    "600690",  # 海尔智家
-    "600031",  # 三一重工
-    "600585",  # 海螺水泥
-    # ── 通信/基建 ──
-    "600050",  # 中国联通
-    "601728",  # 中国电信
-    "601800",  # 中国交建
-    "601668",  # 中国建筑
-    "601390",  # 中国中铁
-    # ── 地产/公用 ──
-    "000002",  # 万科A
-    "001979",  # 招商蛇口
-    "600900",  # 长江电力
-    "600009",  # 上海机场
-]
+def load_stock_list(data_dir: str = "data") -> list[dict]:
+    """从 JSON 文件加载沪深300成分股列表
+
+    返回: [{"code": "000001", "name": "平安银行", "exchange": "SZ", ...}, ...]
+    """
+    json_path = os.path.join(data_dir, "csi300_stocks.json")
+    if os.path.exists(json_path):
+        with open(json_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    # JSON 文件不存在，使用内置核心列表（降级方案）
+    print(f"[警告] {json_path} 不存在，使用内置核心成分股列表（56只）")
+    CORE_STOCKS = [
+        "600036", "601398", "601288", "601939", "600000", "601166", "600016",
+        "000001", "601318", "601628", "600030", "601688", "600519", "000858",
+        "000568", "600887", "600436", "000538", "603288", "300750", "002415",
+        "000063", "002230", "300059", "603501", "603986", "002241", "002594",
+        "600104", "601633", "601012", "600438", "601857", "600028", "601088",
+        "600019", "601899", "600346", "600276", "300015", "300760", "000963",
+        "000651", "000333", "600690", "600031", "600585", "600050", "601728",
+        "601800", "601668", "601390", "000002", "001979", "600900", "600009",
+    ]
+    return [{"code": c, "name": "", "exchange": ""} for c in CORE_STOCKS]
 
 
-def get_stock_list(limit: int = 0) -> list:
-    """获取股票列表"""
-    codes = CORE_STOCKS.copy()
-    if limit > 0:
-        codes = codes[:limit]
-    print(f"核心成分股: 共 {len(codes)} 只")
-    return codes
+def format_eta(seconds: float) -> str:
+    """格式化预计剩余时间"""
+    if seconds < 60:
+        return f"{seconds:.0f}s"
+    m, s = divmod(int(seconds), 60)
+    return f"{m}m{s}s"
+
+
+def progress_callback(current, total, code, success):
+    """进度回调：打印进度条和ETA"""
+    pct = current / total * 100
+    bar_len = 30
+    filled = int(bar_len * current / total)
+    bar = "=" * filled + "-" * (bar_len - filled)
+    status = "OK" if success else "FAIL"
+    print(f"\r  [{bar}] {current}/{total} ({pct:.0f}%) {code} {status}    ", end="", flush=True)
+    if current == total:
+        print()  # 换行
 
 
 def main():
-    parser = argparse.ArgumentParser(description="批量导入核心成分股数据")
-    parser.add_argument("--limit", type=int, default=0, help="限制导入数量（0=全部）")
-    parser.add_argument("--data-dir", default="qlib_data", help="Qlib数据目录")
+    parser = argparse.ArgumentParser(description="沪深300批量数据导入")
+    parser.add_argument("--limit", type=int, default=0,
+                        help="限制导入数量（0=全部300只）")
+    parser.add_argument("--years", type=float, default=3,
+                        help="历史数据年数（默认3年）")
+    parser.add_argument("--start-date", default="",
+                        help="自定义起始日期 YYYY-MM-DD（覆盖 --years）")
+    parser.add_argument("--refresh", action="store_true",
+                        help="增量刷新模式（重新拉取覆盖，用于每日更新）")
+    parser.add_argument("--data-dir", default="qlib_data",
+                        help="Qlib数据目录")
+    parser.add_argument("--rate-limit", type=float, default=0.35,
+                        help="请求间隔秒数（避免被封）")
     args = parser.parse_args()
 
-    # 获取成分股
-    codes = get_stock_list(args.limit)
-    if not codes:
-        print("股票列表为空，退出")
-        sys.exit(1)
+    # 加载成分股列表
+    stocks = load_stock_list()
+    codes = [s["code"] for s in stocks]
+    if args.limit > 0:
+        codes = codes[:args.limit]
 
-    # 批量导入
+    print(f"沪深300成分股: 共 {len(codes)} 只")
+    if args.start_date:
+        start_date = args.start_date
+        print(f"起始日期: {start_date}")
+    else:
+        start_date = (datetime.now() - timedelta(days=int(args.years * 365))).strftime("%Y-%m-%d")
+        print(f"历史数据: {args.years} 年（从 {start_date} 起）")
+
+    # 初始化管道
     pipeline = QlibDataPipeline(qlib_data_dir=args.data_dir)
-    print(f"\n开始批量导入 {len(codes)} 只股票...")
-    print(f"预计耗时: {len(codes) * 0.5:.0f} 秒")
+
+    # 预估时间
+    est_time = len(codes) * (args.rate_limit + 0.3)
+    print(f"预计耗时: ~{format_eta(est_time)}")
     print()
 
-    result = pipeline.dump_all(codes)
+    # 执行导入
+    if args.refresh:
+        print("=== 增量刷新模式 ===")
+        result = pipeline.refresh_all(
+            codes,
+            rate_limit=args.rate_limit,
+            progress_callback=progress_callback,
+        )
+    else:
+        print("=== 全量导入模式 ===")
+        result = pipeline.dump_all(
+            codes,
+            start_date=start_date,
+            rate_limit=args.rate_limit,
+            progress_callback=progress_callback,
+        )
 
     # 输出结果
     elapsed = result.get("elapsed_seconds", 0)
@@ -128,11 +135,11 @@ def main():
     print(f"  成功: {len(result['success'])} 只")
     print(f"  失败: {len(result['failed'])} 只")
     print(f"  交易日历: {result['calendar_days']} 天")
-    print(f"  耗时: {elapsed:.1f} 秒")
+    print(f"  耗时: {format_eta(elapsed)}")
 
     if result['failed']:
-        print(f"\n失败股票: {', '.join(result['failed'][:20])}")
-        if len(result['failed']) > 20:
+        print(f"\n失败股票: {', '.join(result['failed'][:30])}")
+        if len(result['failed']) > 30:
             print(f"  ...等 {len(result['failed'])} 只")
 
     # 打印状态
@@ -140,9 +147,41 @@ def main():
     print(f"\n数据状态:")
     print(f"  总股票数: {status['stock_count']}")
     print(f"  日历天数: {status['calendar_days']}")
+    print(f"  日历范围: {status['calendar_start']} ~ {status['calendar_end']}")
     print(f"  bin文件数: {status['bin_files']}")
     print(f"  总大小: {status['total_size_mb']} MB")
 
+    # 写入日志文件（供 cron 记录）
+    log_dir = Path("data")
+    log_dir.mkdir(exist_ok=True)
+    log_file = log_dir / "import_log.json"
+    log_entry = {
+        "timestamp": datetime.now().isoformat(),
+        "mode": "refresh" if args.refresh else "full",
+        "total": len(codes),
+        "success": len(result['success']),
+        "failed": len(result['failed']),
+        "failed_codes": result['failed'][:50],
+        "calendar_days": result['calendar_days'],
+        "elapsed_seconds": elapsed,
+    }
+
+    # 追加到日志文件
+    logs = []
+    if log_file.exists():
+        try:
+            with open(log_file, "r") as f:
+                logs = json.load(f)
+        except:
+            logs = []
+    logs.append(log_entry)
+    # 只保留最近100条
+    logs = logs[-100:]
+    with open(log_file, "w", encoding="utf-8") as f:
+        json.dump(logs, f, ensure_ascii=False, indent=2)
+
+    return 0 if not result['failed'] else 1
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
