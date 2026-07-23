@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import settings
-from routers import analysis, strategies, market, users, auth, subscriptions, notifications, screener, backtest, daily_brief, watchlist, research, hkus, capital_flow, industry_chain, community, tokens, quant, notes
+from routers import analysis, strategies, market, users, auth, subscriptions, notifications, screener, backtest, daily_brief, watchlist, research, hkus, capital_flow, industry_chain, community, tokens, quant, notes, tushare_data
 
 
 @asynccontextmanager
@@ -62,6 +62,7 @@ app.include_router(community.router, prefix="/api/community", tags=["策略社�
 app.include_router(tokens.router, prefix="/api/tokens", tags=["Token管理"])
 app.include_router(quant.router, prefix="/api/quant", tags=["量化因子"])
 app.include_router(notes.router, prefix="/api/notes", tags=["知识笔记"])
+app.include_router(tushare_data.router, prefix="/api/tushare", tags=["Tushare数据"])
 
 
 @app.get("/")

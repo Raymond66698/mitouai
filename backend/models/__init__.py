@@ -7,6 +7,7 @@ from models.watchlist import Watchlist, Portfolio, Trade
 from models.community import SharedStrategy, StrategyLike, StrategyComment
 from models.analysis import AnalysisTask, AnalysisReport
 from models.notification import Notification
+from models.tushare_models import StockBasic, DailyQuote, TradeCalendar, DailyBasic
 
 __all__ = [
     "Base",
@@ -17,4 +18,5 @@ __all__ = [
     "SharedStrategy", "StrategyLike", "StrategyComment",
     "AnalysisTask", "AnalysisReport",
     "Notification",
+    "StockBasic", "DailyQuote", "TradeCalendar", "DailyBasic",
 ]

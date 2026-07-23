@@ -46,6 +46,7 @@ class Settings:
 
     # ── 市场数据 ──
     AKSHARE_CACHE_TTL: int = int(os.getenv("AKSHARE_CACHE_TTL", "3600"))
+    TUSHARE_TOKEN: str = os.getenv("TUSHARE_TOKEN", "")
 
     # ── 分析任务 ──
     ANALYSIS_TIMEOUT: int = int(os.getenv("ANALYSIS_TIMEOUT", "600"))
