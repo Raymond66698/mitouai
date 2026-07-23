@@ -20,6 +20,7 @@ import IndustryChain from './pages/IndustryChain'
 import Community from './pages/Community'
 import Pricing from './pages/Pricing'
 import Tokens from './pages/Tokens'
+import QuantClassroom from './pages/QuantClassroom'
 
 export default function App() {
   const { user, loading } = useAuth()
@@ -60,6 +61,7 @@ export default function App() {
           <Route path="/capital" element={user ? <CapitalFlow /> : <Navigate to="/login" />} />
           <Route path="/chain" element={user ? <IndustryChain /> : <Navigate to="/login" />} />
           <Route path="/community" element={user ? <Community /> : <Navigate to="/login" />} />
+          <Route path="/classroom" element={user ? <QuantClassroom /> : <Navigate to="/login" />} />
           <Route path="/tokens" element={user ? <Tokens /> : <Navigate to="/login" />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="*" element={<Navigate to="/" />} />

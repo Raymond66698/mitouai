@@ -4,7 +4,8 @@ import { useAuth } from '../hooks/useAuth'
 import {
   BarChart3, Search, Zap, Bell, Settings, LogOut, Menu, X,
   TrendingUp, Radio, Star, FileText, DollarSign, GitBranch,
-  Share2, Filter, Sparkles, ChevronDown, User, Crown, Coins
+  Share2, Filter, Sparkles, ChevronDown, User, Crown, Coins,
+  GraduationCap
 } from 'lucide-react'
 
 const navGroups = [
@@ -26,6 +27,7 @@ const navGroups = [
     ]
   },
   { to: '/strategies', label: '策略超市', icon: Zap },
+  { to: '/classroom', label: '策略小课堂', icon: GraduationCap },
   { to: '/community', label: '策略广场', icon: Share2 },
   {
     label: '我的', icon: User,
