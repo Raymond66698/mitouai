@@ -4,6 +4,8 @@
 # ── 用户数据 ──
 backend/data/*.json
 backend/data/*.db
+# 例外：成分股配置文件需要版本控制
+!backend/data/csi300_stocks.json
 
 # ── Qlib 数据（在服务器上生成）──
 backend/qlib_data/

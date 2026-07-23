@@ -1,0 +1,2102 @@
+[
+  {
+    "code": "000001",
+    "name": "平安银行",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000001",
+    "yahoo_symbol": "000001.SZ"
+  },
+  {
+    "code": "000002",
+    "name": "万科A",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000002",
+    "yahoo_symbol": "000002.SZ"
+  },
+  {
+    "code": "000063",
+    "name": "中兴通讯",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000063",
+    "yahoo_symbol": "000063.SZ"
+  },
+  {
+    "code": "000100",
+    "name": "TCL科技",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000100",
+    "yahoo_symbol": "000100.SZ"
+  },
+  {
+    "code": "000157",
+    "name": "中联重科",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000157",
+    "yahoo_symbol": "000157.SZ"
+  },
+  {
+    "code": "000166",
+    "name": "申万宏源",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000166",
+    "yahoo_symbol": "000166.SZ"
+  },
+  {
+    "code": "000301",
+    "name": "东方盛虹",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000301",
+    "yahoo_symbol": "000301.SZ"
+  },
+  {
+    "code": "000333",
+    "name": "美的集团",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000333",
+    "yahoo_symbol": "000333.SZ"
+  },
+  {
+    "code": "000338",
+    "name": "潍柴动力",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000338",
+    "yahoo_symbol": "000338.SZ"
+  },
+  {
+    "code": "000408",
+    "name": "藏格矿业",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000408",
+    "yahoo_symbol": "000408.SZ"
+  },
+  {
+    "code": "000425",
+    "name": "徐工机械",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000425",
+    "yahoo_symbol": "000425.SZ"
+  },
+  {
+    "code": "000538",
+    "name": "云南白药",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000538",
+    "yahoo_symbol": "000538.SZ"
+  },
+  {
+    "code": "000568",
+    "name": "泸州老窖",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000568",
+    "yahoo_symbol": "000568.SZ"
+  },
+  {
+    "code": "000596",
+    "name": "古井贡酒",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000596",
+    "yahoo_symbol": "000596.SZ"
+  },
+  {
+    "code": "000617",
+    "name": "中油资本",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000617",
+    "yahoo_symbol": "000617.SZ"
+  },
+  {
+    "code": "000625",
+    "name": "长安汽车",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000625",
+    "yahoo_symbol": "000625.SZ"
+  },
+  {
+    "code": "000630",
+    "name": "铜陵有色",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000630",
+    "yahoo_symbol": "000630.SZ"
+  },
+  {
+    "code": "000651",
+    "name": "格力电器",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000651",
+    "yahoo_symbol": "000651.SZ"
+  },
+  {
+    "code": "000657",
+    "name": "中钨高新",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000657",
+    "yahoo_symbol": "000657.SZ"
+  },
+  {
+    "code": "000708",
+    "name": "中信特钢",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000708",
+    "yahoo_symbol": "000708.SZ"
+  },
+  {
+    "code": "000725",
+    "name": "京东方A",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000725",
+    "yahoo_symbol": "000725.SZ"
+  },
+  {
+    "code": "000768",
+    "name": "中航西飞",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000768",
+    "yahoo_symbol": "000768.SZ"
+  },
+  {
+    "code": "000776",
+    "name": "广发证券",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000776",
+    "yahoo_symbol": "000776.SZ"
+  },
+  {
+    "code": "000792",
+    "name": "盐湖股份",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000792",
+    "yahoo_symbol": "000792.SZ"
+  },
+  {
+    "code": "000807",
+    "name": "云铝股份",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000807",
+    "yahoo_symbol": "000807.SZ"
+  },
+  {
+    "code": "000858",
+    "name": "五 粮 液",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000858",
+    "yahoo_symbol": "000858.SZ"
+  },
+  {
+    "code": "000895",
+    "name": "双汇发展",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000895",
+    "yahoo_symbol": "000895.SZ"
+  },
+  {
+    "code": "000938",
+    "name": "紫光股份",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000938",
+    "yahoo_symbol": "000938.SZ"
+  },
+  {
+    "code": "000963",
+    "name": "华东医药",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000963",
+    "yahoo_symbol": "000963.SZ"
+  },
+  {
+    "code": "000975",
+    "name": "山金国际",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000975",
+    "yahoo_symbol": "000975.SZ"
+  },
+  {
+    "code": "000977",
+    "name": "浪潮信息",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000977",
+    "yahoo_symbol": "000977.SZ"
+  },
+  {
+    "code": "000988",
+    "name": "华工科技",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000988",
+    "yahoo_symbol": "000988.SZ"
+  },
+  {
+    "code": "000999",
+    "name": "华润三九",
+    "exchange": "SZ",
+    "qlib_symbol": "sz000999",
+    "yahoo_symbol": "000999.SZ"
+  },
+  {
+    "code": "001280",
+    "name": "中国铀业",
+    "exchange": "SZ",
+    "qlib_symbol": "sz001280",
+    "yahoo_symbol": "001280.SZ"
+  },
+  {
+    "code": "001391",
+    "name": "国货航",
+    "exchange": "SZ",
+    "qlib_symbol": "sz001391",
+    "yahoo_symbol": "001391.SZ"
+  },
+  {
+    "code": "001965",
+    "name": "招商公路",
+    "exchange": "SZ",
+    "qlib_symbol": "sz001965",
+    "yahoo_symbol": "001965.SZ"
+  },
+  {
+    "code": "001979",
+    "name": "招商蛇口",
+    "exchange": "SZ",
+    "qlib_symbol": "sz001979",
+    "yahoo_symbol": "001979.SZ"
+  },
+  {
+    "code": "002001",
+    "name": "新和成",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002001",
+    "yahoo_symbol": "002001.SZ"
+  },
+  {
+    "code": "002027",
+    "name": "分众传媒",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002027",
+    "yahoo_symbol": "002027.SZ"
+  },
+  {
+    "code": "002028",
+    "name": "思源电气",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002028",
+    "yahoo_symbol": "002028.SZ"
+  },
+  {
+    "code": "002049",
+    "name": "紫光国微",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002049",
+    "yahoo_symbol": "002049.SZ"
+  },
+  {
+    "code": "002050",
+    "name": "三花智控",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002050",
+    "yahoo_symbol": "002050.SZ"
+  },
+  {
+    "code": "002074",
+    "name": "国轩高科",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002074",
+    "yahoo_symbol": "002074.SZ"
+  },
+  {
+    "code": "002142",
+    "name": "宁波银行",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002142",
+    "yahoo_symbol": "002142.SZ"
+  },
+  {
+    "code": "002179",
+    "name": "中航光电",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002179",
+    "yahoo_symbol": "002179.SZ"
+  },
+  {
+    "code": "002202",
+    "name": "金风科技",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002202",
+    "yahoo_symbol": "002202.SZ"
+  },
+  {
+    "code": "002230",
+    "name": "科大讯飞",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002230",
+    "yahoo_symbol": "002230.SZ"
+  },
+  {
+    "code": "002236",
+    "name": "大华股份",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002236",
+    "yahoo_symbol": "002236.SZ"
+  },
+  {
+    "code": "002241",
+    "name": "歌尔股份",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002241",
+    "yahoo_symbol": "002241.SZ"
+  },
+  {
+    "code": "002304",
+    "name": "洋河股份",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002304",
+    "yahoo_symbol": "002304.SZ"
+  },
+  {
+    "code": "002311",
+    "name": "海大集团",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002311",
+    "yahoo_symbol": "002311.SZ"
+  },
+  {
+    "code": "002352",
+    "name": "顺丰控股",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002352",
+    "yahoo_symbol": "002352.SZ"
+  },
+  {
+    "code": "002353",
+    "name": "杰瑞股份",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002353",
+    "yahoo_symbol": "002353.SZ"
+  },
+  {
+    "code": "002371",
+    "name": "北方华创",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002371",
+    "yahoo_symbol": "002371.SZ"
+  },
+  {
+    "code": "002384",
+    "name": "东山精密",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002384",
+    "yahoo_symbol": "002384.SZ"
+  },
+  {
+    "code": "002415",
+    "name": "海康威视",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002415",
+    "yahoo_symbol": "002415.SZ"
+  },
+  {
+    "code": "002422",
+    "name": "科伦药业",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002422",
+    "yahoo_symbol": "002422.SZ"
+  },
+  {
+    "code": "002460",
+    "name": "赣锋锂业",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002460",
+    "yahoo_symbol": "002460.SZ"
+  },
+  {
+    "code": "002463",
+    "name": "沪电股份",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002463",
+    "yahoo_symbol": "002463.SZ"
+  },
+  {
+    "code": "002466",
+    "name": "天齐锂业",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002466",
+    "yahoo_symbol": "002466.SZ"
+  },
+  {
+    "code": "002475",
+    "name": "立讯精密",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002475",
+    "yahoo_symbol": "002475.SZ"
+  },
+  {
+    "code": "002493",
+    "name": "荣盛石化",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002493",
+    "yahoo_symbol": "002493.SZ"
+  },
+  {
+    "code": "002532",
+    "name": "天山铝业",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002532",
+    "yahoo_symbol": "002532.SZ"
+  },
+  {
+    "code": "002558",
+    "name": "巨人网络",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002558",
+    "yahoo_symbol": "002558.SZ"
+  },
+  {
+    "code": "002594",
+    "name": "比亚迪",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002594",
+    "yahoo_symbol": "002594.SZ"
+  },
+  {
+    "code": "002600",
+    "name": "领益智造",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002600",
+    "yahoo_symbol": "002600.SZ"
+  },
+  {
+    "code": "002602",
+    "name": "世纪华通",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002602",
+    "yahoo_symbol": "002602.SZ"
+  },
+  {
+    "code": "002625",
+    "name": "光启技术",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002625",
+    "yahoo_symbol": "002625.SZ"
+  },
+  {
+    "code": "002648",
+    "name": "卫星化学",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002648",
+    "yahoo_symbol": "002648.SZ"
+  },
+  {
+    "code": "002709",
+    "name": "天赐材料",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002709",
+    "yahoo_symbol": "002709.SZ"
+  },
+  {
+    "code": "002714",
+    "name": "牧原股份",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002714",
+    "yahoo_symbol": "002714.SZ"
+  },
+  {
+    "code": "002736",
+    "name": "国信证券",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002736",
+    "yahoo_symbol": "002736.SZ"
+  },
+  {
+    "code": "002837",
+    "name": "英维克",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002837",
+    "yahoo_symbol": "002837.SZ"
+  },
+  {
+    "code": "002916",
+    "name": "深南电路",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002916",
+    "yahoo_symbol": "002916.SZ"
+  },
+  {
+    "code": "002920",
+    "name": "德赛西威",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002920",
+    "yahoo_symbol": "002920.SZ"
+  },
+  {
+    "code": "002938",
+    "name": "鹏鼎控股",
+    "exchange": "SZ",
+    "qlib_symbol": "sz002938",
+    "yahoo_symbol": "002938.SZ"
+  },
+  {
+    "code": "003816",
+    "name": "中国广核",
+    "exchange": "SZ",
+    "qlib_symbol": "sz003816",
+    "yahoo_symbol": "003816.SZ"
+  },
+  {
+    "code": "300014",
+    "name": "亿纬锂能",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300014",
+    "yahoo_symbol": "300014.SZ"
+  },
+  {
+    "code": "300015",
+    "name": "爱尔眼科",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300015",
+    "yahoo_symbol": "300015.SZ"
+  },
+  {
+    "code": "300033",
+    "name": "同花顺",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300033",
+    "yahoo_symbol": "300033.SZ"
+  },
+  {
+    "code": "300059",
+    "name": "东方财富",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300059",
+    "yahoo_symbol": "300059.SZ"
+  },
+  {
+    "code": "300122",
+    "name": "智飞生物",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300122",
+    "yahoo_symbol": "300122.SZ"
+  },
+  {
+    "code": "300124",
+    "name": "汇川技术",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300124",
+    "yahoo_symbol": "300124.SZ"
+  },
+  {
+    "code": "300251",
+    "name": "光线传媒",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300251",
+    "yahoo_symbol": "300251.SZ"
+  },
+  {
+    "code": "300274",
+    "name": "阳光电源",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300274",
+    "yahoo_symbol": "300274.SZ"
+  },
+  {
+    "code": "300308",
+    "name": "中际旭创",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300308",
+    "yahoo_symbol": "300308.SZ"
+  },
+  {
+    "code": "300316",
+    "name": "晶盛机电",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300316",
+    "yahoo_symbol": "300316.SZ"
+  },
+  {
+    "code": "300394",
+    "name": "天孚通信",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300394",
+    "yahoo_symbol": "300394.SZ"
+  },
+  {
+    "code": "300408",
+    "name": "三环集团",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300408",
+    "yahoo_symbol": "300408.SZ"
+  },
+  {
+    "code": "300413",
+    "name": "芒果超媒",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300413",
+    "yahoo_symbol": "300413.SZ"
+  },
+  {
+    "code": "300418",
+    "name": "昆仑万维",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300418",
+    "yahoo_symbol": "300418.SZ"
+  },
+  {
+    "code": "300433",
+    "name": "蓝思科技",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300433",
+    "yahoo_symbol": "300433.SZ"
+  },
+  {
+    "code": "300442",
+    "name": "润泽科技",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300442",
+    "yahoo_symbol": "300442.SZ"
+  },
+  {
+    "code": "300450",
+    "name": "先导智能",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300450",
+    "yahoo_symbol": "300450.SZ"
+  },
+  {
+    "code": "300476",
+    "name": "胜宏科技",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300476",
+    "yahoo_symbol": "300476.SZ"
+  },
+  {
+    "code": "300498",
+    "name": "温氏股份",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300498",
+    "yahoo_symbol": "300498.SZ"
+  },
+  {
+    "code": "300502",
+    "name": "新易盛",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300502",
+    "yahoo_symbol": "300502.SZ"
+  },
+  {
+    "code": "300628",
+    "name": "亿联网络",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300628",
+    "yahoo_symbol": "300628.SZ"
+  },
+  {
+    "code": "300661",
+    "name": "圣邦股份",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300661",
+    "yahoo_symbol": "300661.SZ"
+  },
+  {
+    "code": "300750",
+    "name": "宁德时代",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300750",
+    "yahoo_symbol": "300750.SZ"
+  },
+  {
+    "code": "300760",
+    "name": "迈瑞医疗",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300760",
+    "yahoo_symbol": "300760.SZ"
+  },
+  {
+    "code": "300803",
+    "name": "指南针",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300803",
+    "yahoo_symbol": "300803.SZ"
+  },
+  {
+    "code": "300832",
+    "name": "新产业",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300832",
+    "yahoo_symbol": "300832.SZ"
+  },
+  {
+    "code": "300866",
+    "name": "安克创新",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300866",
+    "yahoo_symbol": "300866.SZ"
+  },
+  {
+    "code": "300896",
+    "name": "爱美客",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300896",
+    "yahoo_symbol": "300896.SZ"
+  },
+  {
+    "code": "300999",
+    "name": "金龙鱼",
+    "exchange": "SZ",
+    "qlib_symbol": "sz300999",
+    "yahoo_symbol": "300999.SZ"
+  },
+  {
+    "code": "301165",
+    "name": "锐捷网络",
+    "exchange": "SZ",
+    "qlib_symbol": "sz301165",
+    "yahoo_symbol": "301165.SZ"
+  },
+  {
+    "code": "301236",
+    "name": "软通动力",
+    "exchange": "SZ",
+    "qlib_symbol": "sz301236",
+    "yahoo_symbol": "301236.SZ"
+  },
+  {
+    "code": "301269",
+    "name": "华大九天",
+    "exchange": "SZ",
+    "qlib_symbol": "sz301269",
+    "yahoo_symbol": "301269.SZ"
+  },
+  {
+    "code": "301308",
+    "name": "江波龙",
+    "exchange": "SZ",
+    "qlib_symbol": "sz301308",
+    "yahoo_symbol": "301308.SZ"
+  },
+  {
+    "code": "302132",
+    "name": "中航成飞",
+    "exchange": "SZ",
+    "qlib_symbol": "sz302132",
+    "yahoo_symbol": "302132.SZ"
+  },
+  {
+    "code": "600000",
+    "name": "浦发银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh600000",
+    "yahoo_symbol": "600000.SS"
+  },
+  {
+    "code": "600009",
+    "name": "上海机场",
+    "exchange": "SH",
+    "qlib_symbol": "sh600009",
+    "yahoo_symbol": "600009.SS"
+  },
+  {
+    "code": "600010",
+    "name": "包钢股份",
+    "exchange": "SH",
+    "qlib_symbol": "sh600010",
+    "yahoo_symbol": "600010.SS"
+  },
+  {
+    "code": "600011",
+    "name": "华能国际",
+    "exchange": "SH",
+    "qlib_symbol": "sh600011",
+    "yahoo_symbol": "600011.SS"
+  },
+  {
+    "code": "600015",
+    "name": "华夏银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh600015",
+    "yahoo_symbol": "600015.SS"
+  },
+  {
+    "code": "600016",
+    "name": "民生银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh600016",
+    "yahoo_symbol": "600016.SS"
+  },
+  {
+    "code": "600018",
+    "name": "上港集团",
+    "exchange": "SH",
+    "qlib_symbol": "sh600018",
+    "yahoo_symbol": "600018.SS"
+  },
+  {
+    "code": "600019",
+    "name": "宝钢股份",
+    "exchange": "SH",
+    "qlib_symbol": "sh600019",
+    "yahoo_symbol": "600019.SS"
+  },
+  {
+    "code": "600023",
+    "name": "浙能电力",
+    "exchange": "SH",
+    "qlib_symbol": "sh600023",
+    "yahoo_symbol": "600023.SS"
+  },
+  {
+    "code": "600025",
+    "name": "华能水电",
+    "exchange": "SH",
+    "qlib_symbol": "sh600025",
+    "yahoo_symbol": "600025.SS"
+  },
+  {
+    "code": "600026",
+    "name": "中远海能",
+    "exchange": "SH",
+    "qlib_symbol": "sh600026",
+    "yahoo_symbol": "600026.SS"
+  },
+  {
+    "code": "600027",
+    "name": "华电国际",
+    "exchange": "SH",
+    "qlib_symbol": "sh600027",
+    "yahoo_symbol": "600027.SS"
+  },
+  {
+    "code": "600028",
+    "name": "中国石化",
+    "exchange": "SH",
+    "qlib_symbol": "sh600028",
+    "yahoo_symbol": "600028.SS"
+  },
+  {
+    "code": "600029",
+    "name": "南方航空",
+    "exchange": "SH",
+    "qlib_symbol": "sh600029",
+    "yahoo_symbol": "600029.SS"
+  },
+  {
+    "code": "600030",
+    "name": "中信证券",
+    "exchange": "SH",
+    "qlib_symbol": "sh600030",
+    "yahoo_symbol": "600030.SS"
+  },
+  {
+    "code": "600031",
+    "name": "三一重工",
+    "exchange": "SH",
+    "qlib_symbol": "sh600031",
+    "yahoo_symbol": "600031.SS"
+  },
+  {
+    "code": "600036",
+    "name": "招商银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh600036",
+    "yahoo_symbol": "600036.SS"
+  },
+  {
+    "code": "600039",
+    "name": "四川路桥",
+    "exchange": "SH",
+    "qlib_symbol": "sh600039",
+    "yahoo_symbol": "600039.SS"
+  },
+  {
+    "code": "600048",
+    "name": "保利发展",
+    "exchange": "SH",
+    "qlib_symbol": "sh600048",
+    "yahoo_symbol": "600048.SS"
+  },
+  {
+    "code": "600050",
+    "name": "中国联通",
+    "exchange": "SH",
+    "qlib_symbol": "sh600050",
+    "yahoo_symbol": "600050.SS"
+  },
+  {
+    "code": "600061",
+    "name": "国投资本",
+    "exchange": "SH",
+    "qlib_symbol": "sh600061",
+    "yahoo_symbol": "600061.SS"
+  },
+  {
+    "code": "600066",
+    "name": "宇通客车",
+    "exchange": "SH",
+    "qlib_symbol": "sh600066",
+    "yahoo_symbol": "600066.SS"
+  },
+  {
+    "code": "600085",
+    "name": "同仁堂",
+    "exchange": "SH",
+    "qlib_symbol": "sh600085",
+    "yahoo_symbol": "600085.SS"
+  },
+  {
+    "code": "600089",
+    "name": "特变电工",
+    "exchange": "SH",
+    "qlib_symbol": "sh600089",
+    "yahoo_symbol": "600089.SS"
+  },
+  {
+    "code": "600104",
+    "name": "上汽集团",
+    "exchange": "SH",
+    "qlib_symbol": "sh600104",
+    "yahoo_symbol": "600104.SS"
+  },
+  {
+    "code": "600111",
+    "name": "北方稀土",
+    "exchange": "SH",
+    "qlib_symbol": "sh600111",
+    "yahoo_symbol": "600111.SS"
+  },
+  {
+    "code": "600115",
+    "name": "中国东航",
+    "exchange": "SH",
+    "qlib_symbol": "sh600115",
+    "yahoo_symbol": "600115.SS"
+  },
+  {
+    "code": "600118",
+    "name": "中国卫星",
+    "exchange": "SH",
+    "qlib_symbol": "sh600118",
+    "yahoo_symbol": "600118.SS"
+  },
+  {
+    "code": "600150",
+    "name": "中国船舶",
+    "exchange": "SH",
+    "qlib_symbol": "sh600150",
+    "yahoo_symbol": "600150.SS"
+  },
+  {
+    "code": "600160",
+    "name": "巨化股份",
+    "exchange": "SH",
+    "qlib_symbol": "sh600160",
+    "yahoo_symbol": "600160.SS"
+  },
+  {
+    "code": "600176",
+    "name": "中国巨石",
+    "exchange": "SH",
+    "qlib_symbol": "sh600176",
+    "yahoo_symbol": "600176.SS"
+  },
+  {
+    "code": "600183",
+    "name": "生益科技",
+    "exchange": "SH",
+    "qlib_symbol": "sh600183",
+    "yahoo_symbol": "600183.SS"
+  },
+  {
+    "code": "600188",
+    "name": "兖矿能源",
+    "exchange": "SH",
+    "qlib_symbol": "sh600188",
+    "yahoo_symbol": "600188.SS"
+  },
+  {
+    "code": "600196",
+    "name": "复星医药",
+    "exchange": "SH",
+    "qlib_symbol": "sh600196",
+    "yahoo_symbol": "600196.SS"
+  },
+  {
+    "code": "600219",
+    "name": "南山铝业",
+    "exchange": "SH",
+    "qlib_symbol": "sh600219",
+    "yahoo_symbol": "600219.SS"
+  },
+  {
+    "code": "600221",
+    "name": "海航控股",
+    "exchange": "SH",
+    "qlib_symbol": "sh600221",
+    "yahoo_symbol": "600221.SS"
+  },
+  {
+    "code": "600233",
+    "name": "圆通速递",
+    "exchange": "SH",
+    "qlib_symbol": "sh600233",
+    "yahoo_symbol": "600233.SS"
+  },
+  {
+    "code": "600276",
+    "name": "恒瑞医药",
+    "exchange": "SH",
+    "qlib_symbol": "sh600276",
+    "yahoo_symbol": "600276.SS"
+  },
+  {
+    "code": "600309",
+    "name": "万华化学",
+    "exchange": "SH",
+    "qlib_symbol": "sh600309",
+    "yahoo_symbol": "600309.SS"
+  },
+  {
+    "code": "600346",
+    "name": "恒力石化",
+    "exchange": "SH",
+    "qlib_symbol": "sh600346",
+    "yahoo_symbol": "600346.SS"
+  },
+  {
+    "code": "600362",
+    "name": "江西铜业",
+    "exchange": "SH",
+    "qlib_symbol": "sh600362",
+    "yahoo_symbol": "600362.SS"
+  },
+  {
+    "code": "600372",
+    "name": "中航机载",
+    "exchange": "SH",
+    "qlib_symbol": "sh600372",
+    "yahoo_symbol": "600372.SS"
+  },
+  {
+    "code": "600406",
+    "name": "国电南瑞",
+    "exchange": "SH",
+    "qlib_symbol": "sh600406",
+    "yahoo_symbol": "600406.SS"
+  },
+  {
+    "code": "600415",
+    "name": "小商品城",
+    "exchange": "SH",
+    "qlib_symbol": "sh600415",
+    "yahoo_symbol": "600415.SS"
+  },
+  {
+    "code": "600426",
+    "name": "华鲁恒升",
+    "exchange": "SH",
+    "qlib_symbol": "sh600426",
+    "yahoo_symbol": "600426.SS"
+  },
+  {
+    "code": "600436",
+    "name": "片仔癀",
+    "exchange": "SH",
+    "qlib_symbol": "sh600436",
+    "yahoo_symbol": "600436.SS"
+  },
+  {
+    "code": "600438",
+    "name": "通威股份",
+    "exchange": "SH",
+    "qlib_symbol": "sh600438",
+    "yahoo_symbol": "600438.SS"
+  },
+  {
+    "code": "600460",
+    "name": "士兰微",
+    "exchange": "SH",
+    "qlib_symbol": "sh600460",
+    "yahoo_symbol": "600460.SS"
+  },
+  {
+    "code": "600482",
+    "name": "中国动力",
+    "exchange": "SH",
+    "qlib_symbol": "sh600482",
+    "yahoo_symbol": "600482.SS"
+  },
+  {
+    "code": "600489",
+    "name": "中金黄金",
+    "exchange": "SH",
+    "qlib_symbol": "sh600489",
+    "yahoo_symbol": "600489.SS"
+  },
+  {
+    "code": "600515",
+    "name": "海南机场",
+    "exchange": "SH",
+    "qlib_symbol": "sh600515",
+    "yahoo_symbol": "600515.SS"
+  },
+  {
+    "code": "600519",
+    "name": "贵州茅台",
+    "exchange": "SH",
+    "qlib_symbol": "sh600519",
+    "yahoo_symbol": "600519.SS"
+  },
+  {
+    "code": "600522",
+    "name": "中天科技",
+    "exchange": "SH",
+    "qlib_symbol": "sh600522",
+    "yahoo_symbol": "600522.SS"
+  },
+  {
+    "code": "600547",
+    "name": "山东黄金",
+    "exchange": "SH",
+    "qlib_symbol": "sh600547",
+    "yahoo_symbol": "600547.SS"
+  },
+  {
+    "code": "600549",
+    "name": "厦门钨业",
+    "exchange": "SH",
+    "qlib_symbol": "sh600549",
+    "yahoo_symbol": "600549.SS"
+  },
+  {
+    "code": "600570",
+    "name": "恒生电子",
+    "exchange": "SH",
+    "qlib_symbol": "sh600570",
+    "yahoo_symbol": "600570.SS"
+  },
+  {
+    "code": "600584",
+    "name": "长电科技",
+    "exchange": "SH",
+    "qlib_symbol": "sh600584",
+    "yahoo_symbol": "600584.SS"
+  },
+  {
+    "code": "600585",
+    "name": "海螺水泥",
+    "exchange": "SH",
+    "qlib_symbol": "sh600585",
+    "yahoo_symbol": "600585.SS"
+  },
+  {
+    "code": "600588",
+    "name": "用友网络",
+    "exchange": "SH",
+    "qlib_symbol": "sh600588",
+    "yahoo_symbol": "600588.SS"
+  },
+  {
+    "code": "600600",
+    "name": "青岛啤酒",
+    "exchange": "SH",
+    "qlib_symbol": "sh600600",
+    "yahoo_symbol": "600600.SS"
+  },
+  {
+    "code": "600660",
+    "name": "福耀玻璃",
+    "exchange": "SH",
+    "qlib_symbol": "sh600660",
+    "yahoo_symbol": "600660.SS"
+  },
+  {
+    "code": "600674",
+    "name": "川投能源",
+    "exchange": "SH",
+    "qlib_symbol": "sh600674",
+    "yahoo_symbol": "600674.SS"
+  },
+  {
+    "code": "600690",
+    "name": "海尔智家",
+    "exchange": "SH",
+    "qlib_symbol": "sh600690",
+    "yahoo_symbol": "600690.SS"
+  },
+  {
+    "code": "600741",
+    "name": "华域汽车",
+    "exchange": "SH",
+    "qlib_symbol": "sh600741",
+    "yahoo_symbol": "600741.SS"
+  },
+  {
+    "code": "600760",
+    "name": "中航沈飞",
+    "exchange": "SH",
+    "qlib_symbol": "sh600760",
+    "yahoo_symbol": "600760.SS"
+  },
+  {
+    "code": "600795",
+    "name": "国电电力",
+    "exchange": "SH",
+    "qlib_symbol": "sh600795",
+    "yahoo_symbol": "600795.SS"
+  },
+  {
+    "code": "600803",
+    "name": "新奥股份",
+    "exchange": "SH",
+    "qlib_symbol": "sh600803",
+    "yahoo_symbol": "600803.SS"
+  },
+  {
+    "code": "600809",
+    "name": "山西汾酒",
+    "exchange": "SH",
+    "qlib_symbol": "sh600809",
+    "yahoo_symbol": "600809.SS"
+  },
+  {
+    "code": "600845",
+    "name": "宝信软件",
+    "exchange": "SH",
+    "qlib_symbol": "sh600845",
+    "yahoo_symbol": "600845.SS"
+  },
+  {
+    "code": "600875",
+    "name": "东方电气",
+    "exchange": "SH",
+    "qlib_symbol": "sh600875",
+    "yahoo_symbol": "600875.SS"
+  },
+  {
+    "code": "600886",
+    "name": "国投电力",
+    "exchange": "SH",
+    "qlib_symbol": "sh600886",
+    "yahoo_symbol": "600886.SS"
+  },
+  {
+    "code": "600887",
+    "name": "伊利股份",
+    "exchange": "SH",
+    "qlib_symbol": "sh600887",
+    "yahoo_symbol": "600887.SS"
+  },
+  {
+    "code": "600893",
+    "name": "航发动力",
+    "exchange": "SH",
+    "qlib_symbol": "sh600893",
+    "yahoo_symbol": "600893.SS"
+  },
+  {
+    "code": "600900",
+    "name": "长江电力",
+    "exchange": "SH",
+    "qlib_symbol": "sh600900",
+    "yahoo_symbol": "600900.SS"
+  },
+  {
+    "code": "600905",
+    "name": "三峡能源",
+    "exchange": "SH",
+    "qlib_symbol": "sh600905",
+    "yahoo_symbol": "600905.SS"
+  },
+  {
+    "code": "600918",
+    "name": "中泰证券",
+    "exchange": "SH",
+    "qlib_symbol": "sh600918",
+    "yahoo_symbol": "600918.SS"
+  },
+  {
+    "code": "600919",
+    "name": "江苏银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh600919",
+    "yahoo_symbol": "600919.SS"
+  },
+  {
+    "code": "600926",
+    "name": "杭州银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh600926",
+    "yahoo_symbol": "600926.SS"
+  },
+  {
+    "code": "600930",
+    "name": "华电新能",
+    "exchange": "SH",
+    "qlib_symbol": "sh600930",
+    "yahoo_symbol": "600930.SS"
+  },
+  {
+    "code": "600938",
+    "name": "中国海油",
+    "exchange": "SH",
+    "qlib_symbol": "sh600938",
+    "yahoo_symbol": "600938.SS"
+  },
+  {
+    "code": "600941",
+    "name": "中国移动",
+    "exchange": "SH",
+    "qlib_symbol": "sh600941",
+    "yahoo_symbol": "600941.SS"
+  },
+  {
+    "code": "600958",
+    "name": "东方证券",
+    "exchange": "SH",
+    "qlib_symbol": "sh600958",
+    "yahoo_symbol": "600958.SS"
+  },
+  {
+    "code": "600989",
+    "name": "宝丰能源",
+    "exchange": "SH",
+    "qlib_symbol": "sh600989",
+    "yahoo_symbol": "600989.SS"
+  },
+  {
+    "code": "600999",
+    "name": "招商证券",
+    "exchange": "SH",
+    "qlib_symbol": "sh600999",
+    "yahoo_symbol": "600999.SS"
+  },
+  {
+    "code": "601006",
+    "name": "大秦铁路",
+    "exchange": "SH",
+    "qlib_symbol": "sh601006",
+    "yahoo_symbol": "601006.SS"
+  },
+  {
+    "code": "601009",
+    "name": "南京银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601009",
+    "yahoo_symbol": "601009.SS"
+  },
+  {
+    "code": "601012",
+    "name": "隆基绿能",
+    "exchange": "SH",
+    "qlib_symbol": "sh601012",
+    "yahoo_symbol": "601012.SS"
+  },
+  {
+    "code": "601018",
+    "name": "宁波港",
+    "exchange": "SH",
+    "qlib_symbol": "sh601018",
+    "yahoo_symbol": "601018.SS"
+  },
+  {
+    "code": "601021",
+    "name": "春秋航空",
+    "exchange": "SH",
+    "qlib_symbol": "sh601021",
+    "yahoo_symbol": "601021.SS"
+  },
+  {
+    "code": "601058",
+    "name": "赛轮轮胎",
+    "exchange": "SH",
+    "qlib_symbol": "sh601058",
+    "yahoo_symbol": "601058.SS"
+  },
+  {
+    "code": "601059",
+    "name": "信达证券",
+    "exchange": "SH",
+    "qlib_symbol": "sh601059",
+    "yahoo_symbol": "601059.SS"
+  },
+  {
+    "code": "601066",
+    "name": "中信建投",
+    "exchange": "SH",
+    "qlib_symbol": "sh601066",
+    "yahoo_symbol": "601066.SS"
+  },
+  {
+    "code": "601077",
+    "name": "渝农商行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601077",
+    "yahoo_symbol": "601077.SS"
+  },
+  {
+    "code": "601088",
+    "name": "中国神华",
+    "exchange": "SH",
+    "qlib_symbol": "sh601088",
+    "yahoo_symbol": "601088.SS"
+  },
+  {
+    "code": "601100",
+    "name": "恒立液压",
+    "exchange": "SH",
+    "qlib_symbol": "sh601100",
+    "yahoo_symbol": "601100.SS"
+  },
+  {
+    "code": "601111",
+    "name": "中国国航",
+    "exchange": "SH",
+    "qlib_symbol": "sh601111",
+    "yahoo_symbol": "601111.SS"
+  },
+  {
+    "code": "601117",
+    "name": "中国化学",
+    "exchange": "SH",
+    "qlib_symbol": "sh601117",
+    "yahoo_symbol": "601117.SS"
+  },
+  {
+    "code": "601127",
+    "name": "赛力斯",
+    "exchange": "SH",
+    "qlib_symbol": "sh601127",
+    "yahoo_symbol": "601127.SS"
+  },
+  {
+    "code": "601136",
+    "name": "首创证券",
+    "exchange": "SH",
+    "qlib_symbol": "sh601136",
+    "yahoo_symbol": "601136.SS"
+  },
+  {
+    "code": "601138",
+    "name": "工业富联",
+    "exchange": "SH",
+    "qlib_symbol": "sh601138",
+    "yahoo_symbol": "601138.SS"
+  },
+  {
+    "code": "601166",
+    "name": "兴业银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601166",
+    "yahoo_symbol": "601166.SS"
+  },
+  {
+    "code": "601169",
+    "name": "北京银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601169",
+    "yahoo_symbol": "601169.SS"
+  },
+  {
+    "code": "601186",
+    "name": "中国铁建",
+    "exchange": "SH",
+    "qlib_symbol": "sh601186",
+    "yahoo_symbol": "601186.SS"
+  },
+  {
+    "code": "601211",
+    "name": "国泰海通",
+    "exchange": "SH",
+    "qlib_symbol": "sh601211",
+    "yahoo_symbol": "601211.SS"
+  },
+  {
+    "code": "601225",
+    "name": "陕西煤业",
+    "exchange": "SH",
+    "qlib_symbol": "sh601225",
+    "yahoo_symbol": "601225.SS"
+  },
+  {
+    "code": "601229",
+    "name": "上海银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601229",
+    "yahoo_symbol": "601229.SS"
+  },
+  {
+    "code": "601238",
+    "name": "广汽集团",
+    "exchange": "SH",
+    "qlib_symbol": "sh601238",
+    "yahoo_symbol": "601238.SS"
+  },
+  {
+    "code": "601288",
+    "name": "农业银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601288",
+    "yahoo_symbol": "601288.SS"
+  },
+  {
+    "code": "601318",
+    "name": "中国平安",
+    "exchange": "SH",
+    "qlib_symbol": "sh601318",
+    "yahoo_symbol": "601318.SS"
+  },
+  {
+    "code": "601319",
+    "name": "中国人保",
+    "exchange": "SH",
+    "qlib_symbol": "sh601319",
+    "yahoo_symbol": "601319.SS"
+  },
+  {
+    "code": "601328",
+    "name": "交通银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601328",
+    "yahoo_symbol": "601328.SS"
+  },
+  {
+    "code": "601336",
+    "name": "新华保险",
+    "exchange": "SH",
+    "qlib_symbol": "sh601336",
+    "yahoo_symbol": "601336.SS"
+  },
+  {
+    "code": "601360",
+    "name": "三六零",
+    "exchange": "SH",
+    "qlib_symbol": "sh601360",
+    "yahoo_symbol": "601360.SS"
+  },
+  {
+    "code": "601377",
+    "name": "兴业证券",
+    "exchange": "SH",
+    "qlib_symbol": "sh601377",
+    "yahoo_symbol": "601377.SS"
+  },
+  {
+    "code": "601390",
+    "name": "中国中铁",
+    "exchange": "SH",
+    "qlib_symbol": "sh601390",
+    "yahoo_symbol": "601390.SS"
+  },
+  {
+    "code": "601398",
+    "name": "工商银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601398",
+    "yahoo_symbol": "601398.SS"
+  },
+  {
+    "code": "601456",
+    "name": "国联民生",
+    "exchange": "SH",
+    "qlib_symbol": "sh601456",
+    "yahoo_symbol": "601456.SS"
+  },
+  {
+    "code": "601600",
+    "name": "中国铝业",
+    "exchange": "SH",
+    "qlib_symbol": "sh601600",
+    "yahoo_symbol": "601600.SS"
+  },
+  {
+    "code": "601601",
+    "name": "中国太保",
+    "exchange": "SH",
+    "qlib_symbol": "sh601601",
+    "yahoo_symbol": "601601.SS"
+  },
+  {
+    "code": "601607",
+    "name": "上海医药",
+    "exchange": "SH",
+    "qlib_symbol": "sh601607",
+    "yahoo_symbol": "601607.SS"
+  },
+  {
+    "code": "601618",
+    "name": "中国中冶",
+    "exchange": "SH",
+    "qlib_symbol": "sh601618",
+    "yahoo_symbol": "601618.SS"
+  },
+  {
+    "code": "601628",
+    "name": "中国人寿",
+    "exchange": "SH",
+    "qlib_symbol": "sh601628",
+    "yahoo_symbol": "601628.SS"
+  },
+  {
+    "code": "601633",
+    "name": "长城汽车",
+    "exchange": "SH",
+    "qlib_symbol": "sh601633",
+    "yahoo_symbol": "601633.SS"
+  },
+  {
+    "code": "601658",
+    "name": "邮储银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601658",
+    "yahoo_symbol": "601658.SS"
+  },
+  {
+    "code": "601668",
+    "name": "中国建筑",
+    "exchange": "SH",
+    "qlib_symbol": "sh601668",
+    "yahoo_symbol": "601668.SS"
+  },
+  {
+    "code": "601669",
+    "name": "中国电建",
+    "exchange": "SH",
+    "qlib_symbol": "sh601669",
+    "yahoo_symbol": "601669.SS"
+  },
+  {
+    "code": "601688",
+    "name": "华泰证券",
+    "exchange": "SH",
+    "qlib_symbol": "sh601688",
+    "yahoo_symbol": "601688.SS"
+  },
+  {
+    "code": "601689",
+    "name": "拓普集团",
+    "exchange": "SH",
+    "qlib_symbol": "sh601689",
+    "yahoo_symbol": "601689.SS"
+  },
+  {
+    "code": "601698",
+    "name": "中国卫通",
+    "exchange": "SH",
+    "qlib_symbol": "sh601698",
+    "yahoo_symbol": "601698.SS"
+  },
+  {
+    "code": "601727",
+    "name": "上海电气",
+    "exchange": "SH",
+    "qlib_symbol": "sh601727",
+    "yahoo_symbol": "601727.SS"
+  },
+  {
+    "code": "601728",
+    "name": "中国电信",
+    "exchange": "SH",
+    "qlib_symbol": "sh601728",
+    "yahoo_symbol": "601728.SS"
+  },
+  {
+    "code": "601766",
+    "name": "中国中车",
+    "exchange": "SH",
+    "qlib_symbol": "sh601766",
+    "yahoo_symbol": "601766.SS"
+  },
+  {
+    "code": "601788",
+    "name": "光大证券",
+    "exchange": "SH",
+    "qlib_symbol": "sh601788",
+    "yahoo_symbol": "601788.SS"
+  },
+  {
+    "code": "601800",
+    "name": "中国交建",
+    "exchange": "SH",
+    "qlib_symbol": "sh601800",
+    "yahoo_symbol": "601800.SS"
+  },
+  {
+    "code": "601816",
+    "name": "京沪高铁",
+    "exchange": "SH",
+    "qlib_symbol": "sh601816",
+    "yahoo_symbol": "601816.SS"
+  },
+  {
+    "code": "601818",
+    "name": "光大银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601818",
+    "yahoo_symbol": "601818.SS"
+  },
+  {
+    "code": "601825",
+    "name": "沪农商行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601825",
+    "yahoo_symbol": "601825.SS"
+  },
+  {
+    "code": "601838",
+    "name": "成都银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601838",
+    "yahoo_symbol": "601838.SS"
+  },
+  {
+    "code": "601857",
+    "name": "中国石油",
+    "exchange": "SH",
+    "qlib_symbol": "sh601857",
+    "yahoo_symbol": "601857.SS"
+  },
+  {
+    "code": "601868",
+    "name": "中国能建",
+    "exchange": "SH",
+    "qlib_symbol": "sh601868",
+    "yahoo_symbol": "601868.SS"
+  },
+  {
+    "code": "601872",
+    "name": "招商轮船",
+    "exchange": "SH",
+    "qlib_symbol": "sh601872",
+    "yahoo_symbol": "601872.SS"
+  },
+  {
+    "code": "601877",
+    "name": "正泰电器",
+    "exchange": "SH",
+    "qlib_symbol": "sh601877",
+    "yahoo_symbol": "601877.SS"
+  },
+  {
+    "code": "601878",
+    "name": "浙商证券",
+    "exchange": "SH",
+    "qlib_symbol": "sh601878",
+    "yahoo_symbol": "601878.SS"
+  },
+  {
+    "code": "601881",
+    "name": "中国银河",
+    "exchange": "SH",
+    "qlib_symbol": "sh601881",
+    "yahoo_symbol": "601881.SS"
+  },
+  {
+    "code": "601888",
+    "name": "中国中免",
+    "exchange": "SH",
+    "qlib_symbol": "sh601888",
+    "yahoo_symbol": "601888.SS"
+  },
+  {
+    "code": "601898",
+    "name": "中煤能源",
+    "exchange": "SH",
+    "qlib_symbol": "sh601898",
+    "yahoo_symbol": "601898.SS"
+  },
+  {
+    "code": "601899",
+    "name": "紫金矿业",
+    "exchange": "SH",
+    "qlib_symbol": "sh601899",
+    "yahoo_symbol": "601899.SS"
+  },
+  {
+    "code": "601901",
+    "name": "方正证券",
+    "exchange": "SH",
+    "qlib_symbol": "sh601901",
+    "yahoo_symbol": "601901.SS"
+  },
+  {
+    "code": "601916",
+    "name": "浙商银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601916",
+    "yahoo_symbol": "601916.SS"
+  },
+  {
+    "code": "601919",
+    "name": "中远海控",
+    "exchange": "SH",
+    "qlib_symbol": "sh601919",
+    "yahoo_symbol": "601919.SS"
+  },
+  {
+    "code": "601939",
+    "name": "建设银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601939",
+    "yahoo_symbol": "601939.SS"
+  },
+  {
+    "code": "601985",
+    "name": "中国核电",
+    "exchange": "SH",
+    "qlib_symbol": "sh601985",
+    "yahoo_symbol": "601985.SS"
+  },
+  {
+    "code": "601988",
+    "name": "中国银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601988",
+    "yahoo_symbol": "601988.SS"
+  },
+  {
+    "code": "601995",
+    "name": "中金公司",
+    "exchange": "SH",
+    "qlib_symbol": "sh601995",
+    "yahoo_symbol": "601995.SS"
+  },
+  {
+    "code": "601998",
+    "name": "中信银行",
+    "exchange": "SH",
+    "qlib_symbol": "sh601998",
+    "yahoo_symbol": "601998.SS"
+  },
+  {
+    "code": "603019",
+    "name": "中科曙光",
+    "exchange": "SH",
+    "qlib_symbol": "sh603019",
+    "yahoo_symbol": "603019.SS"
+  },
+  {
+    "code": "603259",
+    "name": "药明康德",
+    "exchange": "SH",
+    "qlib_symbol": "sh603259",
+    "yahoo_symbol": "603259.SS"
+  },
+  {
+    "code": "603260",
+    "name": "合盛硅业",
+    "exchange": "SH",
+    "qlib_symbol": "sh603260",
+    "yahoo_symbol": "603260.SS"
+  },
+  {
+    "code": "603288",
+    "name": "海天味业",
+    "exchange": "SH",
+    "qlib_symbol": "sh603288",
+    "yahoo_symbol": "603288.SS"
+  },
+  {
+    "code": "603296",
+    "name": "华勤技术",
+    "exchange": "SH",
+    "qlib_symbol": "sh603296",
+    "yahoo_symbol": "603296.SS"
+  },
+  {
+    "code": "603369",
+    "name": "今世缘",
+    "exchange": "SH",
+    "qlib_symbol": "sh603369",
+    "yahoo_symbol": "603369.SS"
+  },
+  {
+    "code": "603392",
+    "name": "万泰生物",
+    "exchange": "SH",
+    "qlib_symbol": "sh603392",
+    "yahoo_symbol": "603392.SS"
+  },
+  {
+    "code": "603501",
+    "name": "豪威集团",
+    "exchange": "SH",
+    "qlib_symbol": "sh603501",
+    "yahoo_symbol": "603501.SS"
+  },
+  {
+    "code": "603799",
+    "name": "华友钴业",
+    "exchange": "SH",
+    "qlib_symbol": "sh603799",
+    "yahoo_symbol": "603799.SS"
+  },
+  {
+    "code": "603893",
+    "name": "瑞芯微",
+    "exchange": "SH",
+    "qlib_symbol": "sh603893",
+    "yahoo_symbol": "603893.SS"
+  },
+  {
+    "code": "603986",
+    "name": "兆易创新",
+    "exchange": "SH",
+    "qlib_symbol": "sh603986",
+    "yahoo_symbol": "603986.SS"
+  },
+  {
+    "code": "603993",
+    "name": "洛阳钼业",
+    "exchange": "SH",
+    "qlib_symbol": "sh603993",
+    "yahoo_symbol": "603993.SS"
+  },
+  {
+    "code": "605117",
+    "name": "德业股份",
+    "exchange": "SH",
+    "qlib_symbol": "sh605117",
+    "yahoo_symbol": "605117.SS"
+  },
+  {
+    "code": "605499",
+    "name": "东鹏饮料",
+    "exchange": "SH",
+    "qlib_symbol": "sh605499",
+    "yahoo_symbol": "605499.SS"
+  },
+  {
+    "code": "688008",
+    "name": "澜起科技",
+    "exchange": "SH",
+    "qlib_symbol": "sh688008",
+    "yahoo_symbol": "688008.SS"
+  },
+  {
+    "code": "688009",
+    "name": "中国通号",
+    "exchange": "SH",
+    "qlib_symbol": "sh688009",
+    "yahoo_symbol": "688009.SS"
+  },
+  {
+    "code": "688012",
+    "name": "中微公司",
+    "exchange": "SH",
+    "qlib_symbol": "sh688012",
+    "yahoo_symbol": "688012.SS"
+  },
+  {
+    "code": "688036",
+    "name": "传音控股",
+    "exchange": "SH",
+    "qlib_symbol": "sh688036",
+    "yahoo_symbol": "688036.SS"
+  },
+  {
+    "code": "688041",
+    "name": "海光信息",
+    "exchange": "SH",
+    "qlib_symbol": "sh688041",
+    "yahoo_symbol": "688041.SS"
+  },
+  {
+    "code": "688047",
+    "name": "龙芯中科",
+    "exchange": "SH",
+    "qlib_symbol": "sh688047",
+    "yahoo_symbol": "688047.SS"
+  },
+  {
+    "code": "688072",
+    "name": "拓荆科技",
+    "exchange": "SH",
+    "qlib_symbol": "sh688072",
+    "yahoo_symbol": "688072.SS"
+  },
+  {
+    "code": "688082",
+    "name": "盛美上海",
+    "exchange": "SH",
+    "qlib_symbol": "sh688082",
+    "yahoo_symbol": "688082.SS"
+  },
+  {
+    "code": "688111",
+    "name": "金山办公",
+    "exchange": "SH",
+    "qlib_symbol": "sh688111",
+    "yahoo_symbol": "688111.SS"
+  },
+  {
+    "code": "688126",
+    "name": "沪硅产业",
+    "exchange": "SH",
+    "qlib_symbol": "sh688126",
+    "yahoo_symbol": "688126.SS"
+  },
+  {
+    "code": "688183",
+    "name": "生益电子",
+    "exchange": "SH",
+    "qlib_symbol": "sh688183",
+    "yahoo_symbol": "688183.SS"
+  },
+  {
+    "code": "688223",
+    "name": "晶科能源",
+    "exchange": "SH",
+    "qlib_symbol": "sh688223",
+    "yahoo_symbol": "688223.SS"
+  },
+  {
+    "code": "688256",
+    "name": "寒武纪",
+    "exchange": "SH",
+    "qlib_symbol": "sh688256",
+    "yahoo_symbol": "688256.SS"
+  },
+  {
+    "code": "688271",
+    "name": "联影医疗",
+    "exchange": "SH",
+    "qlib_symbol": "sh688271",
+    "yahoo_symbol": "688271.SS"
+  },
+  {
+    "code": "688303",
+    "name": "大全能源",
+    "exchange": "SH",
+    "qlib_symbol": "sh688303",
+    "yahoo_symbol": "688303.SS"
+  },
+  {
+    "code": "688396",
+    "name": "华润微",
+    "exchange": "SH",
+    "qlib_symbol": "sh688396",
+    "yahoo_symbol": "688396.SS"
+  },
+  {
+    "code": "688472",
+    "name": "阿特斯",
+    "exchange": "SH",
+    "qlib_symbol": "sh688472",
+    "yahoo_symbol": "688472.SS"
+  },
+  {
+    "code": "688506",
+    "name": "百利天恒",
+    "exchange": "SH",
+    "qlib_symbol": "sh688506",
+    "yahoo_symbol": "688506.SS"
+  },
+  {
+    "code": "688521",
+    "name": "芯原股份",
+    "exchange": "SH",
+    "qlib_symbol": "sh688521",
+    "yahoo_symbol": "688521.SS"
+  },
+  {
+    "code": "688981",
+    "name": "中芯国际",
+    "exchange": "SH",
+    "qlib_symbol": "sh688981",
+    "yahoo_symbol": "688981.SS"
+  }
+]
