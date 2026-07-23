@@ -2,7 +2,7 @@
 通知路由 — 推送设置、通知历史
 """
 import logging
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Query
 from models.schemas import (
     NotificationSettingsUpdate, APIResponse, NotificationItem,
 )
@@ -35,8 +35,8 @@ async def update_settings(
 
 @router.get("/history", response_model=APIResponse)
 async def get_history(
-    limit: int = 20,
-    unread_only: bool = False,
+    limit: int = Query(20, ge=1, le=100),
+    unread_only: bool = Query(False),
     user: dict = Depends(get_current_user),
 ):
     """获取通知历史"""
@@ -52,13 +52,15 @@ async def get_history(
     )
 
 
-@router.post("/read/{index}", response_model=APIResponse)
+@router.post("/read/{notification_id}", response_model=APIResponse)
 async def mark_read(
-    index: int,
+    notification_id: int,
     user: dict = Depends(get_current_user),
 ):
-    """标记通知已读"""
-    push_service.mark_read(user["id"], index)
+    """标记通知已读（通过通知 ID）"""
+    success = push_service.mark_read(user["id"], notification_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="通知不存在")
     return APIResponse(success=True, message="已标记为已读")
 
 
@@ -67,6 +69,13 @@ async def mark_all_read(user: dict = Depends(get_current_user)):
     """全部标记已读"""
     push_service.mark_all_read(user["id"])
     return APIResponse(success=True, message="全部已标记为已读")
+
+
+@router.get("/unread-count", response_model=APIResponse)
+async def get_unread_count(user: dict = Depends(get_current_user)):
+    """获取未读通知数量"""
+    count = push_service.get_unread_count(user["id"])
+    return APIResponse(success=True, data={"count": count})
 
 
 @router.get("/help", response_model=APIResponse)

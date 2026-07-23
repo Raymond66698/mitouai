@@ -2,9 +2,8 @@
 from datetime import datetime
 
 from sqlalchemy import (
-    Column, Integer, String, Boolean, ForeignKey,
+    Column, Integer, String, Boolean,
 )
-from sqlalchemy.orm import relationship
 
 from models.base import Base
 
@@ -18,7 +17,7 @@ class Notification(Base):
     __tablename__ = "notifications"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(String(12), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(String(255), nullable=True, index=True)
     type = Column(String(50), nullable=False)  # analysis_complete, breaking_news, system
     title = Column(String(200), nullable=False)
     content = Column(String(2000), default="")

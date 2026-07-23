@@ -161,6 +161,7 @@ class NotificationSettingsUpdate(BaseModel):
 
 
 class NotificationItem(BaseModel):
+    id: int
     type: str
     title: str
     content: str

@@ -16,7 +16,7 @@ from services.analysis_service import AnalysisService
 from services.user_service import UserService
 
 logger = logging.getLogger("mitouai.analysis")
-router = APIRouter(prefix="/api/analysis", tags=["投研分析"])
+router = APIRouter(tags=["投研分析"])
 analysis_service = AnalysisService()
 
 

@@ -18,14 +18,14 @@ class AnalysisTask(Base):
     __tablename__ = "analysis_tasks"
 
     task_id = Column(String(36), primary_key=True)
-    user_id = Column(String(12), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(String(255), nullable=True, index=True)
     ticker = Column(String(20), nullable=False)
     trade_date = Column(String(10), nullable=True)
     status = Column(String(20), default="pending")  # pending|running|completed|failed
     model = Column(String(50), default="default")
     strategy_id = Column(String(50), nullable=True)
-    debate_rounds = Column(Integer, default=3)
-    risk_rounds = Column(Integer, default=2)
+    debate_rounds = Column(Integer, default=1)
+    risk_rounds = Column(Integer, default=1)
 
     # 结果
     result_summary = Column(Text, nullable=True)
@@ -36,7 +36,6 @@ class AnalysisTask(Base):
 
     # 关联
     report = relationship("AnalysisReport", back_populates="task", uselist=False, cascade="all, delete-orphan")
-    user = relationship("User")
 
     def to_dict(self) -> dict:
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -60,8 +59,8 @@ class AnalysisReport(Base):
     global_news_available = Column(Integer, default=0)
 
     # 分析结论
-    decision = Column(String(20), nullable=True)  # buy|sell|hold
-    confidence = Column(Float, nullable=True)     # 0-100
+    decision = Column(String(20), nullable=True)  # BUY|SELL|HOLD
+    confidence = Column(String(50), nullable=True)  # 高/中等/低
     summary = Column(Text, nullable=True)
 
     # 原始分析章节
