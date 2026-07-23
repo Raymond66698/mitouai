@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSearchParams, useParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import API_BASE from '../api'
+import { API_BASE } from '../api'
 import { Radar } from 'react-chartjs-2'
 import {
   Chart as ChartJS, RadialLinearScale, PointElement, LineElement,

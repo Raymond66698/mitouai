@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import API_BASE from '../api'
+import { API_BASE } from '../api'
 import { Heart, MessageCircle, TrendingUp, Share2, Copy, ArrowUpRight } from 'lucide-react'
 
 export default function Community() {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
-import API_BASE from '../api'
+import { API_BASE } from '../api'
 import { Bell, BellOff, Check, ExternalLink } from 'lucide-react'
 
 export default function Notifications() {

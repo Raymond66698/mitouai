@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import API_BASE from '../api'
+import { API_BASE } from '../api'
 import { GitBranch, Layers, ArrowRight, TrendingUp } from 'lucide-react'
 
 const LAYER_COLORS = {
