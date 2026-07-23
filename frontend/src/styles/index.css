@@ -2,6 +2,595 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+/* ======================== 全局基础样式 ======================== */
+
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #E0D5C5 transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: #E0D5C5;
+    border-radius: 3px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: #C8B898;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background-color: #FFF8EE;
+    color: #1A1A2E;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* 选中文字 */
+  ::selection {
+    background-color: rgba(200, 150, 62, 0.25);
+    color: #1A1A2E;
+  }
+
+  /* 聚焦环 */
+  :focus-visible {
+    outline: 2px solid #C8963E;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* 数字字体优化 */
+  .num {
+    font-feature-settings: 'tnum';
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* 链接默认样式 */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* 输入框全局 */
+  input::placeholder {
+    color: #A09080;
+  }
+}
+
+/* ======================== 组件层工具类 ======================== */
+
+@layer components {
+  /* ── 财运玻璃态卡片 ── */
+  .glass {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(200, 150, 62, 0.12);
+  }
+
+  .glass-hover:hover {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(200, 150, 62, 0.25);
+    box-shadow: 0 4px 20px rgba(200, 150, 62, 0.1);
+  }
+
+  /* ── 基础卡片 ── */
+  .card {
+    background: #FFFFFF;
+    border: 1px solid #F0E6D3;
+    border-radius: 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .card-hover:hover {
+    border-color: #D4C4A8;
+    box-shadow: 0 8px 24px 0 rgba(139, 115, 85, 0.12);
+    transform: translateY(-1px);
+  }
+
+  /* ── 财运金边卡片 ── */
+  .card-gold {
+    background: #FFFFFF;
+    border: 1px solid transparent;
+    border-radius: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-gold::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(200, 150, 62, 0.4), rgba(249, 190, 60, 0.2), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .card-gold:hover::before {
+    background: linear-gradient(135deg, rgba(200, 150, 62, 0.6), rgba(249, 190, 60, 0.4), rgba(200, 150, 62, 0.2));
+  }
+
+  /* ── 渐变文字 ── */
+  .text-gradient {
+    background: linear-gradient(135deg, #C8963E, #E8A817, #F9BE3C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-red {
+    background: linear-gradient(135deg, #C41E3A, #E8405A, #F87171);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── 按钮 ── */
+  .btn-primary {
+    background: linear-gradient(135deg, #C8963E, #E8A817);
+    color: #FFFFFF;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    padding: 0.625rem 1.5rem;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 8px rgba(200, 150, 62, 0.25);
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #A0762A, #C8963E);
+    box-shadow: 0 4px 20px rgba(200, 150, 62, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  .btn-red {
+    background: linear-gradient(135deg, #C41E3A, #DC2626);
+    color: #FFFFFF;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    padding: 0.625rem 1.5rem;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 8px rgba(196, 30, 58, 0.25);
+  }
+
+  .btn-red:hover {
+    background: linear-gradient(135deg, #A3152E, #C41E3A);
+    box-shadow: 0 4px 20px rgba(196, 30, 58, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: #FFF8EE;
+    color: #5A3F14;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    padding: 0.625rem 1.5rem;
+    transition: all 0.2s ease;
+    border: 1px solid #F0E6D3;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-secondary:hover {
+    background: #FFF3E0;
+    border-color: #D4C4A8;
+    color: #3D2A0C;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: #6B5B4E;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    transition: all 0.15s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-ghost:hover {
+    background: #FFF3E0;
+    color: #3D2A0C;
+  }
+
+  .btn-outline-gold {
+    background: transparent;
+    color: #C8963E;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    padding: 0.625rem 1.5rem;
+    transition: all 0.2s ease;
+    border: 1.5px solid #C8963E;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-outline-gold:hover {
+    background: rgba(200, 150, 62, 0.08);
+    border-color: #E8A817;
+    color: #A0762A;
+  }
+
+  /* ── 输入框 ── */
+  .input-light {
+    background: #FFFFFF;
+    border: 1px solid #F0E6D3;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #1A1A2E;
+    transition: all 0.2s ease;
+    font-size: 0.9375rem;
+  }
+
+  .input-light:focus {
+    outline: none;
+    border-color: #C8963E;
+    box-shadow: 0 0 0 3px rgba(200, 150, 62, 0.12);
+  }
+
+  .input-light::placeholder {
+    color: #A09080;
+  }
+
+  /* ── 标签/徽章 ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.625rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+  }
+
+  .badge-gold {
+    background: rgba(200, 150, 62, 0.12);
+    color: #A0762A;
+  }
+
+  .badge-red {
+    background: rgba(196, 30, 58, 0.1);
+    color: #C41E3A;
+  }
+
+  .badge-up {
+    background: rgba(220, 38, 38, 0.1);
+    color: #DC2626;
+  }
+
+  .badge-down {
+    background: rgba(5, 150, 105, 0.1);
+    color: #059669;
+  }
+
+  /* ── 分隔线 ── */
+  .divider {
+    height: 1px;
+    background: #F0E6D3;
+    border: none;
+    margin: 0;
+  }
+
+  /* ── 骨架屏 ── */
+  .skeleton {
+    background: linear-gradient(90deg, #F0E6D3 25%, #FFF3E0 50%, #F0E6D3 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s ease-in-out infinite;
+    border-radius: 0.5rem;
+  }
+}
+
+/* ======================== 工具层 ======================== */
+
+@layer utilities {
+  /* 文本截断 */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  /* 毛玻璃背景 */
+  .bg-glass {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  /* 隐藏滚动条但可滚动 */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ======================== 动画 ======================== */
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* 渐入动画类（用于页面加载） */
+.animate-in {
+  animation: fadeSlideIn 0.5s ease-out both;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 交错动画延迟 */
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.1s; }
+.delay-3 { animation-delay: 0.15s; }
+.delay-4 { animation-delay: 0.2s; }
+.delay-5 { animation-delay: 0.25s; }
+.delay-6 { animation-delay: 0.3s; }
+
+/* ── 财运金粒子光效 ── */
+@keyframes goldParticle {
+  0%   { opacity: 0; transform: translateY(0) scale(0); }
+  20%  { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-40px) scale(1); }
+}
+
+.gold-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #F9BE3C 0%, rgba(249, 190, 60, 0) 70%);
+  border-radius: 50%;
+  animation: goldParticleFloat 12s ease-in-out infinite;
+  pointer-events: none;
+  filter: blur(0.5px);
+}
+
+@keyframes goldParticleFloat {
+  0%, 100% {
+    opacity: 0.2;
+    transform: translate(0, 0) scale(0.8);
+  }
+  25% {
+    opacity: 0.6;
+    transform: translate(10px, -15px) scale(1.1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: translate(-5px, -30px) scale(0.9);
+  }
+  75% {
+    opacity: 0.5;
+    transform: translate(8px, -10px) scale(1);
+  }
+}
+
+/* ── 指数卡片动效 ── */
+.index-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.index-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, transparent 60%, rgba(200, 150, 62, 0.08) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.index-card:hover::after {
+  opacity: 1;
+}
+
+.index-card:hover {
+  border-color: rgba(200, 150, 62, 0.4);
+  box-shadow: 0 8px 28px rgba(200, 150, 62, 0.15);
+  transform: translateY(-2px);
+}
+
+/* ── 工具卡片 3D 悬浮 ── */
+.tool-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.tool-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 12px 32px rgba(139, 115, 85, 0.14);
+}
+
+/* ── 要闻条目动效 ── */
+.news-item {
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.news-item:hover {
+  transform: translateX(4px);
+  background: rgba(200, 150, 62, 0.03);
+  border-radius: 0.5rem;
+}
+
+/* ── CTA 卡片脉冲光效 ── */
+.cta-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(249, 190, 60, 0.12) 0%, transparent 50%);
+  animation: ctaPulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ctaPulse {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+}
+
+/* ── 发光扫描线 ── */
+@keyframes scanGlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.scan-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.scan-glow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: translateX(-100%);
+  animation: scanGlow 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── Hero 光晕呼吸 ── */
+@keyframes heroGlow {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+}
+
+.hero-glow {
+  animation: heroGlow 8s ease-in-out infinite;
+}
+
+/* ── 顶部流动光束 ── */
+@keyframes lightBeam {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+.light-beam {
+  animation: lightBeam 6s ease-in-out infinite;
+}
+
+/* ── 柔和脉冲 ── */
+@keyframes pulseSoft {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+.animate-pulse-soft {
+  animation: pulseSoft 2s ease-in-out infinite;
+}
+
+/* ── 卡片 3D 抬起 ── */
+.card-hover-lift {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(139, 115, 85, 0.14), 0 8px 16px rgba(200, 150, 62, 0.08);
+  border-color: rgba(200, 150, 62, 0.35);
+}
+
+/* ── CTA 闪光扫过 ── */
+@keyframes ctaShine {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  100% { transform: translateX(200%) rotate(25deg); }
+}
+
+.cta-shine::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 50%;
+  height: 300%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transform: translateX(-100%) rotate(25deg);
+  animation: ctaShine 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── 搜索框聚焦光晕增强 ── */
+.search-input-glow {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.search-input-glow:focus {
+  transform: scale(1.01);
+}
+
+/* ── 数字滚动容器 ── */
+.num-roll {
+  font-variant-numeric: tabular-nums;
 }

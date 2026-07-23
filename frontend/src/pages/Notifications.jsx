@@ -57,8 +57,8 @@ export default function Notifications() {
     <div className="max-w-2xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">消息通知</h1>
-          <p className="text-gray-500 text-sm mt-1">分析完成、重要动态通知</p>
+          <h1 className="text-2xl font-bold text-ink-primary">消息通知</h1>
+          <p className="text-ink-muted text-sm mt-1">分析完成、重要动态通知</p>
         </div>
         {notifications.length > 0 && (
           <button
@@ -71,10 +71,10 @@ export default function Notifications() {
       </div>
 
       {notifications.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">
-          <BellOff className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <p className="text-gray-500">暂无通知</p>
-          <p className="text-sm text-gray-400 mt-1">运行分析后将在此处显示通知</p>
+        <div className="text-center py-16 bg-base-2 rounded-2xl border border-base-4">
+          <BellOff className="w-12 h-12 text-ink-muted mx-auto mb-3" />
+          <p className="text-ink-muted">暂无通知</p>
+          <p className="text-sm text-ink-muted mt-1">运行分析后将在此处显示通知</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -84,7 +84,7 @@ export default function Notifications() {
               onClick={() => !n.read && markRead(i)}
               className={`p-4 rounded-xl border transition-all cursor-pointer
                 ${n.read
-                  ? 'bg-white border-gray-100'
+                  ? 'bg-base-2 border-base-4'
                   : 'bg-primary-50 border-primary-100 hover:bg-primary-100'
                 }`}
             >
@@ -92,12 +92,12 @@ export default function Notifications() {
                 <div className={`w-2 h-2 rounded-full mt-2 shrink-0 ${n.read ? 'bg-gray-300' : 'bg-primary-500'}`} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <h3 className={`font-medium ${n.read ? 'text-gray-700' : 'text-gray-900'}`}>{n.title}</h3>
-                    <span className="text-xs text-gray-400 shrink-0 ml-2">
+                    <h3 className={`font-medium ${n.read ? 'text-ink-secondary' : 'text-ink-primary'}`}>{n.title}</h3>
+                    <span className="text-xs text-ink-muted shrink-0 ml-2">
                       {n.created_at ? new Date(n.created_at).toLocaleString('zh-CN') : ''}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-500 whitespace-pre-wrap">{n.content}</p>
+                  <p className="text-sm text-ink-muted whitespace-pre-wrap">{n.content}</p>
                   {n.decision && (
                     <span className={`inline-block mt-2 text-xs px-2 py-0.5 rounded-full font-medium
                       ${n.decision === 'BUY' ? 'bg-red-50 text-red-600' :

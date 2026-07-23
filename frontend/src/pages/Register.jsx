@@ -34,13 +34,13 @@ export default function Register() {
 
   return (
     <div className="max-w-md mx-auto mt-10">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+      <div className="bg-base-2 rounded-2xl shadow-card border border-base-4 p-8">
         <div className="text-center mb-8">
           <div className="w-14 h-14 bg-gradient-to-br from-primary-500 to-purple-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4">
             觅
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">注册觅投AI</h1>
-          <p className="text-gray-500 text-sm mt-1">免费版每日3次分析，随时升级</p>
+          <h1 className="text-2xl font-bold text-ink-primary">注册觅投AI</h1>
+          <p className="text-ink-muted text-sm mt-1">免费版每日3次分析，随时升级</p>
         </div>
 
         {error && (
@@ -51,44 +51,44 @@ export default function Register() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">昵称</label>
+            <label className="block text-sm font-medium text-ink-secondary mb-1.5">昵称</label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-muted" />
               <input
                 type="text"
                 value={displayName}
                 onChange={e => setDisplayName(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                className="w-full pl-10 pr-4 py-3 border border-base-4 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
                 placeholder="你的昵称（选填）"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">邮箱</label>
+            <label className="block text-sm font-medium text-ink-secondary mb-1.5">邮箱</label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-muted" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                className="w-full pl-10 pr-4 py-3 border border-base-4 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
                 placeholder="your@email.com"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">密码</label>
+            <label className="block text-sm font-medium text-ink-secondary mb-1.5">密码</label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-muted" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                className="w-full pl-10 pr-4 py-3 border border-base-4 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
                 placeholder="至少6位密码"
               />
             </div>
@@ -110,7 +110,7 @@ export default function Register() {
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="text-center text-sm text-ink-muted mt-6">
           已有账号？{' '}
           <Link to="/login" className="text-primary-600 font-medium hover:text-primary-700">
             立即登录

@@ -19,6 +19,15 @@ akshare>=1.14.0
 pandas>=2.1.0
 stockstats>=0.6.2
 
+# ── 量化因子 (Qlib Alpha158) ──
+pyqlib>=0.9.6
+numpy>=1.24.0
+scipy>=1.10.0
+pyarrow>=10.0.0
+mlflow-skinny>=2.0.0
+dill>=0.3.6
+filelock>=3.9.0
+
 # ── 异步 ──
 httpx>=0.26.0
 aiofiles>=23.2.0

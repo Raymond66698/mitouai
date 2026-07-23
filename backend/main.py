@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import settings
-from routers import analysis, strategies, market, users, auth, subscriptions, notifications
+from routers import analysis, strategies, market, users, auth, subscriptions, notifications, screener, backtest, daily_brief, watchlist, research, hkus, capital_flow, industry_chain, community, tokens, quant
 
 
 @asynccontextmanager
@@ -47,6 +47,17 @@ app.include_router(strategies.router, prefix="/api/strategies", tags=["策略超
 app.include_router(market.router, prefix="/api/market", tags=["行情数据"])
 app.include_router(subscriptions.router, prefix="/api/subscriptions", tags=["订阅"])
 app.include_router(notifications.router, prefix="/api/notifications", tags=["通知"])
+app.include_router(screener.router, prefix="/api/screener", tags=["选股器"])
+app.include_router(backtest.router, prefix="/api/backtest", tags=["回测"])
+app.include_router(daily_brief.router, prefix="/api/brief", tags=["每日播报"])
+app.include_router(watchlist.router, prefix="/api/watchlist", tags=["自选组合"])
+app.include_router(research.router, prefix="/api/research", tags=["研报聚合"])
+app.include_router(hkus.router, prefix="/api/hkus", tags=["港美股"])
+app.include_router(capital_flow.router, prefix="/api/capital", tags=["资金流向"])
+app.include_router(industry_chain.router, prefix="/api/chain", tags=["产业链"])
+app.include_router(community.router, prefix="/api/community", tags=["策略社区"])
+app.include_router(tokens.router, prefix="/api/tokens", tags=["Token管理"])
+app.include_router(quant.router, prefix="/api/quant", tags=["量化因子"])
 
 
 @app.get("/")

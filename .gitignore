@@ -3,6 +3,10 @@
 
 # ── 用户数据 ──
 backend/data/*.json
+backend/data/*.db
+
+# ── Qlib 数据（在服务器上生成）──
+backend/qlib_data/
 
 # ── Python ──
 __pycache__/

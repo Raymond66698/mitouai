@@ -46,9 +46,9 @@ export default function Plans() {
   }
 
   const planIcons = {
-    free: { icon: Star, color: 'text-gray-400', bg: 'bg-gray-50', border: 'border-gray-200' },
-    pro: { icon: Zap, color: 'text-blue-500', bg: 'bg-blue-50', border: 'border-blue-200' },
-    max: { icon: Crown, color: 'text-amber-500', bg: 'bg-amber-50', border: 'border-amber-200' },
+    free: { icon: Star, color: 'text-ink-muted', bg: 'bg-base-2', border: 'border-base-4' },
+    pro: { icon: Zap, color: 'text-primary-500', bg: 'bg-primary-50', border: 'border-primary-200' },
+    max: { icon: Crown, color: 'text-amber-500', bg: 'bg-primary-50', border: 'border-primary-200' },
   }
 
   if (loading) {
@@ -62,8 +62,8 @@ export default function Plans() {
   return (
     <div>
       <div className="text-center mb-10">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">选择适合你的套餐</h1>
-        <p className="text-gray-500">
+        <h1 className="text-2xl font-bold text-ink-primary mb-2">选择适合你的套餐</h1>
+        <p className="text-ink-muted">
           当前：<span className="font-semibold text-primary-600">{user?.plan_name || '免费版'}</span>
           {' · '}剩余 {user?.remaining || 0} 次分析
         </p>
@@ -77,7 +77,7 @@ export default function Plans() {
             <div
               key={plan.id}
               className={`bg-white rounded-2xl border-2 p-6 relative transition-all
-                ${isCurrent ? 'border-primary-400 shadow-lg shadow-primary-100' : 'border-gray-100 hover:border-gray-200'}`}
+                ${isCurrent ? 'border-primary-400 shadow-lg shadow-primary-100' : 'border-base-4 hover:border-base-4'}`}
             >
               {isCurrent && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary-600 text-white text-xs font-medium rounded-full">
@@ -89,15 +89,15 @@ export default function Plans() {
                 <div className={`w-14 h-14 ${bg} rounded-2xl flex items-center justify-center mx-auto mb-4`}>
                   <Icon className={`w-7 h-7 ${color}`} />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
+                <h3 className="text-xl font-bold text-ink-primary">{plan.name}</h3>
                 <div className="mt-2">
                   {plan.price > 0 ? (
-                    <span className="text-3xl font-bold text-gray-900">
+                    <span className="text-3xl font-bold text-ink-primary">
                       ¥{plan.price}
-                      <span className="text-sm font-normal text-gray-400">/{plan.price_unit}</span>
+                      <span className="text-sm font-normal text-ink-muted">/{plan.price_unit}</span>
                     </span>
                   ) : (
-                    <span className="text-3xl font-bold text-gray-900">免费</span>
+                    <span className="text-3xl font-bold text-ink-primary">免费</span>
                   )}
                 </div>
               </div>
@@ -108,7 +108,7 @@ export default function Plans() {
                   <span className="font-medium">每日 {plan.daily_analyses} 次分析</span>
                 </li>
                 {plan.features.map((f, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                  <li key={i} className="flex items-center gap-2 text-sm text-ink-secondary">
                     <Check className="w-4 h-4 text-green-500 shrink-0" />
                     {f}
                   </li>
@@ -118,7 +118,7 @@ export default function Plans() {
               {isCurrent ? (
                 <button
                   disabled
-                  className="w-full py-2.5 bg-gray-100 text-gray-400 rounded-xl font-medium cursor-not-allowed"
+                  className="w-full py-2.5 bg-base-3 text-ink-muted rounded-xl font-medium cursor-not-allowed"
                 >
                   当前套餐
                 </button>
@@ -135,7 +135,7 @@ export default function Plans() {
           )
         })}
       </div>
-      <p className="text-center text-sm text-gray-400 mt-8">
+      <p className="text-center text-sm text-ink-muted mt-8">
         * MVP阶段套餐切换即时生效，后续将接入微信支付/支付宝
       </p>
     </div>

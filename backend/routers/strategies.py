@@ -16,7 +16,7 @@ STRATEGY_TEMPLATES: list[dict] = [
         "description": "寻找具有持久竞争优势、低负债、高ROE的优质企业，以合理价格买入并长期持有",
         "author": "沃伦·巴菲特",
         "tags": ["价值投资", "护城河", "长期持有", "ROE", "自由现金流"],
-        "icon": "/icons/buffett.png",
+        "icon": "🏛️",
         "config_schema": {
             "min_roe": {"type": "number", "default": 15, "description": "最低 ROE (%)"},
             "min_fcf_yield": {"type": "number", "default": 5, "description": "最低自由现金流收益率 (%)"},
@@ -32,7 +32,7 @@ STRATEGY_TEMPLATES: list[dict] = [
         "description": "寻找股价低于净流动资产价值的股票，注重安全边际，是巴菲特早期的核心策略",
         "author": "本杰明·格雷厄姆",
         "tags": ["烟蒂股", "安全边际", "低市净率", "净流动资产"],
-        "icon": "/icons/graham.png",
+        "icon": "🕯️",
         "config_schema": {
             "max_pb": {"type": "number", "default": 0.8, "description": "最高市净率"},
             "max_pe": {"type": "number", "default": 10, "description": "最高市盈率"},
@@ -47,7 +47,7 @@ STRATEGY_TEMPLATES: list[dict] = [
         "description": "寻找 PEG < 1 的成长股，关注盈利增长、低负债、机构持仓低的企业",
         "author": "彼得·林奇",
         "tags": ["成长投资", "PEG", "低负债", "盈利增长"],
-        "icon": "/icons/lynch.png",
+        "icon": "🌱",
         "config_schema": {
             "max_peg": {"type": "number", "default": 1.0, "description": "最高 PEG"},
             "min_eps_growth": {"type": "number", "default": 15, "description": "最低 EPS 增长率 (%)"},
@@ -62,7 +62,7 @@ STRATEGY_TEMPLATES: list[dict] = [
         "description": "跨资产大类配置：股票+债券+黄金+大宗商品，通过风险平价实现任何经济环境下的稳健收益",
         "author": "雷·达里奥",
         "tags": ["资产配置", "风险平价", "全天候", "多元化"],
-        "icon": "/icons/dalio.png",
+        "icon": "🌦️",
         "config_schema": {
             "stock_weight": {"type": "number", "default": 30, "description": "股票权重 (%)"},
             "bond_weight": {"type": "number", "default": 55, "description": "债券权重 (%)"},
@@ -78,7 +78,7 @@ STRATEGY_TEMPLATES: list[dict] = [
         "description": "只投看得懂的生意，注重商业模式和企业文化，好价格不如好公司",
         "author": "段永平",
         "tags": ["商业模式", "企业文化", "能力圈", "集中投资"],
-        "icon": "/icons/duan.png",
+        "icon": "🎯",
         "config_schema": {},
         "default_config": {},
     },
@@ -89,7 +89,7 @@ STRATEGY_TEMPLATES: list[dict] = [
         "description": "运用心理学、经济学、生物学等多学科思维模型综合评估企业价值",
         "author": "查理·芒格",
         "tags": ["多元思维", "逆向思维", "心理误判", "能力圈"],
-        "icon": "/icons/munger.png",
+        "icon": "🧠",
         "config_schema": {},
         "default_config": {},
     },
@@ -101,7 +101,7 @@ STRATEGY_TEMPLATES: list[dict] = [
         "description": "买入过去表现强势的股票，利用价格趋势延续性获利。核心指标：N日收益率排名",
         "author": "学术研究 (Jegadeesh & Titman)",
         "tags": ["动量", "趋势", "相对强度", "中期"],
-        "icon": "/icons/momentum.png",
+        "icon": "🚀",
         "config_schema": {
             "lookback_days": {"type": "number", "default": 60, "description": "回溯天数"},
             "top_pct": {"type": "number", "default": 20, "description": "选前 N%"},
@@ -116,7 +116,7 @@ STRATEGY_TEMPLATES: list[dict] = [
         "description": "买入低估值股票，基于 PE/PB/PS/股息率等指标综合评分",
         "author": "学术研究 (Fama & French)",
         "tags": ["价值", "低估值", "PE", "PB", "股息率"],
-        "icon": "/icons/value.png",
+        "icon": "💎",
         "config_schema": {
             "metrics": {"type": "list", "default": ["pe", "pb", "ps", "dividend_yield"]},
             "top_pct": {"type": "number", "default": 20},
@@ -130,7 +130,7 @@ STRATEGY_TEMPLATES: list[dict] = [
         "description": "买入高ROE、低负债、盈利稳定的优质公司",
         "author": "学术研究",
         "tags": ["质量", "ROE", "低负债", "盈利稳定"],
-        "icon": "/icons/quality.png",
+        "icon": "⭐",
         "config_schema": {
             "min_roe": {"type": "number", "default": 15},
             "max_debt_equity": {"type": "number", "default": 1.0},
@@ -145,7 +145,7 @@ STRATEGY_TEMPLATES: list[dict] = [
         "description": "买入低波动率股票，追求稳健收益和低回撤",
         "author": "学术研究",
         "tags": ["低波动", "低回撤", "夏普比率", "防御型"],
-        "icon": "/icons/lowvol.png",
+        "icon": "🛡️",
         "config_schema": {
             "vol_window": {"type": "number", "default": 60, "description": "波动率计算窗口"},
             "top_pct": {"type": "number", "default": 20},
@@ -160,7 +160,7 @@ STRATEGY_TEMPLATES: list[dict] = [
         "description": "利用A股T+0机制（底仓+当日买卖），结合分时图、量价关系做日内波段",
         "author": "市场牛散",
         "tags": ["T+0", "日内交易", "分时图", "量价关系"],
-        "icon": "/icons/t0.png",
+        "icon": "⚡",
         "config_schema": {
             "position_pct": {"type": "number", "default": 30, "description": "单笔仓位 (%)"},
             "stop_loss_pct": {"type": "number", "default": 2, "description": "止损 (%)"},
@@ -175,7 +175,7 @@ STRATEGY_TEMPLATES: list[dict] = [
         "description": "经典均线交叉系统：短期均线上穿长期均线买入，下穿卖出",
         "author": "技术分析经典",
         "tags": ["均线", "金叉", "死叉", "趋势跟踪"],
-        "icon": "/icons/ma.png",
+        "icon": "📈",
         "config_schema": {
             "short_period": {"type": "number", "default": 5},
             "long_period": {"type": "number", "default": 20},
@@ -189,7 +189,7 @@ STRATEGY_TEMPLATES: list[dict] = [
         "description": "放量突破关键阻力位时买入，缩量跌破支撑位时卖出",
         "author": "市场牛散",
         "tags": ["量价", "突破", "阻力位", "支撑位"],
-        "icon": "/icons/volume.png",
+        "icon": "📊",
         "config_schema": {
             "volume_ratio": {"type": "number", "default": 1.5, "description": "量比阈值"},
             "breakout_pct": {"type": "number", "default": 3, "description": "突破幅度 (%)"},
