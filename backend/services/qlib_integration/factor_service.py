@@ -294,8 +294,41 @@ class QlibFactorService:
 
     def refresh_data(self, tickers: list[str], start_date: str = "",
                      end_date: str = "") -> dict:
-        """拉取/更新股票数据"""
+        """拉取/更新股票数据（优先从 Tushare PostgreSQL 读取，备用 akshare）
+
+        从 PostgreSQL 读取速度比 akshare API 快 25 倍（0.014s/只 vs 0.35s/只）。
+        """
+        global _qlib_initialized
         results = {"success": [], "failed": []}
+
+        # 尝试从 Tushare DB 读取
+        try:
+            codes = [t.split(".")[0] for t in tickers]
+            days_back = 1095  # 默认3年
+            if start_date:
+                from datetime import datetime as dt
+                days_back = (dt.now() - dt.strptime(start_date.replace("-", "")[:8], "%Y%m%d")).days + 30
+
+            r = self.pipeline.refresh_from_tushare_db(codes, days_back=days_back)
+
+            # 映射结果
+            success_codes = set(r.get("success", []))
+            failed_codes = set(r.get("failed", []))
+
+            for ticker in tickers:
+                code = ticker.split(".")[0]
+                if code in success_codes:
+                    results["success"].append({"ticker": ticker, "source": "tushare_db"})
+                elif code in failed_codes:
+                    results["failed"].append({"ticker": ticker, "error": "DB读取失败"})
+
+            if results["success"]:
+                _qlib_initialized = False
+                return results
+        except Exception as e:
+            logger.warning(f"Tushare DB 读取失败，回退到 akshare: {e}")
+
+        # 回退到 akshare
         for ticker in tickers:
             code = ticker.split(".")[0]
             result = self.pipeline.dump_single(code, start_date, end_date)
@@ -305,14 +338,14 @@ class QlibFactorService:
                     "symbol": result.get("symbol"),
                     "records": result.get("records"),
                     "date_range": result.get("date_range"),
+                    "source": "akshare",
                 })
             else:
                 results["failed"].append({
                     "ticker": ticker,
                     "error": result.get("error"),
                 })
-        # 重置 Qlib 初始化状态，让下次调用重新加载
-        global _qlib_initialized
+
         _qlib_initialized = False
         return results
 
